@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Seaview Residence 12</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one mobile column; key facts up top, sticky section nav, sections below. RTL-safe (logical properties). */
+:root{
+  --bg:#F3F6F6; --surface:#FFFFFF; --fg:#13282B; --muted:#5A6E71; --line:#D9E2E2;
+  --accent:#0E6670; --accent-ink:#FFFFFF; --sun:#E8B23A; --chip:#E4EEEE;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0D1A1C; --surface:#152A2D; --fg:#E6EFEF; --muted:#94AAAD; --line:#25403F;
+  --accent:#4FC0C9; --accent-ink:#06282B; --sun:#F0C25A; --chip:#1C3638; color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:2rem;line-height:1.1;font-weight:700}
+h2{font-size:1.3rem;font-weight:700}
+h3{font-size:1rem;font-weight:500}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.eyebrow{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.langs{display:flex;gap:4px;flex-wrap:wrap}
+.langs button{font:600 .8rem var(--body);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:6px;padding:6px 8px;cursor:pointer;min-width:2.4em}
+.langs button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.hello{margin-block:14px 18px;display:grid;gap:6px}
+.hello p{margin:0;color:var(--muted);max-width:60ch}
+.demo{font-size:.72rem;background:var(--sun);color:#3A2A00;border-radius:4px;padding:2px 7px;font-weight:600;width:max-content}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:2px;min-width:0;align-content:start}
+.fact .k{font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.fact .v{font:700 1.05rem var(--display);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+nav.sec{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);margin-top:18px;padding-block:8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.sec a{flex:none;font-size:.85rem;font-weight:500;color:var(--fg);text-decoration:none;background:var(--chip);border-radius:999px;padding:6px 12px}
+section{margin-top:26px;display:grid;gap:10px;scroll-margin-top:56px}
+.list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.card p{margin:0}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+summary{cursor:pointer;padding:12px 14px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--muted);font-weight:500}
+details[open] summary::after{content:"–"}
+details .b{padding:0 14px 14px}
+details .b p{margin:0 0 6px}
+details .b a,.card a{color:var(--accent);font-weight:600;text-decoration:none}
+.rules li{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.rules li:last-child{border-bottom:0}
+.rules .n{font:700 .85rem var(--display);color:var(--accent);min-width:1.4em}
+.sos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sos div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid}
+.sos b{font:700 1.2rem var(--display);font-variant-numeric:tabular-nums}
+.sos span{font-size:.82rem;color:var(--muted)}
+.host{background:var(--accent);color:var(--accent-ink);border-radius:12px;padding:16px;display:grid;gap:6px}
+.host .num{font:700 1.3rem var(--display);user-select:all;font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate;width:max-content}
+.host p{margin:0;opacity:.92}
+footer{margin-top:28px;font-size:.75rem;color:var(--muted);text-align:center}
+.ltr{direction:ltr;unicode-bidi:isolate}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+@media (max-width:420px){.sos{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span class="eyebrow" id="area"></span>
+    <div class="langs" id="langs" role="group" aria-label="Language"></div>
+  </div>
+  <div class="hello">
+    <h1 id="name"></h1>
+    <p id="welcome"></p>
+    <span class="demo" id="demo"></span>
+  </div>
+  <div class="facts" id="facts"></div>
+  <nav class="sec" id="nav"></nav>
+  <section id="first"><h2 data-t="first"></h2><ul class="list" id="firstList"></ul></section>
+  <section id="bills"><h2 data-t="bills"></h2><div class="list" id="billsList"></div></section>
+  <section id="rules"><h2 data-t="rules"></h2><ul class="list rules" id="rulesList"></ul></section>
+  <section id="life"><h2 data-t="life"></h2><div class="list" id="lifeList"></div></section>
+  <section id="help"><h2 data-t="help"></h2><div class="sos" id="sos"></div>
+    <div class="host"><span class="eyebrow" style="color:inherit;opacity:.8" data-t="agent"></span><span class="num" id="hostNum"></span><p id="hostNote"></p></div>
+  </section>
+  <footer id="foot"></footer>
+</div>
+
+<script>
+/* ===== Per-property content. New property: copy this folder, edit DATA. =====
+   Sections "life" and "sos" are area content: write once per city, reuse for every apartment. */
+const DATA = {
+  name: "Seaview Residence · Apt 12",
+  area: {en:"Germasogeia · Limassol",ru:"Гермасойя · Лимассол",he:"גרמסוייה · לימסול",uk:"Гермасоя · Лімасол",zh:"格尔马索耶亚 · 利马索尔",fr:"Germasogeia · Limassol",el:"Γερμασόγεια · Λεμεσός"},
+  welcome: {
+    en:"Welcome to your new home. Everything for your first weeks is here: keys, bills, internet and life in Limassol.",
+    ru:"Добро пожаловать в ваш новый дом. Всё для первых недель здесь: ключи, счета, интернет и жизнь в Лимассоле.",
+    he:"ברוכים הבאים לבית החדש. כל מה שצריך לשבועות הראשונים נמצא כאן: מפתחות, חשבונות, אינטרנט והחיים בלימסול.",
+    uk:"Ласкаво просимо до вашого нового дому. Усе для перших тижнів тут: ключі, рахунки, інтернет і життя в Лімасолі.",
+    zh:"欢迎入住新家。头几周需要的信息都在这里：钥匙、账单、网络以及在利马索尔的生活。",
+    fr:"Bienvenue dans votre nouveau logement. Tout pour vos premières semaines est ici : clés, factures, internet et vie à Limassol.",
+    el:"Καλώς ήρθατε στο νέο σας σπίτι. Ό,τι χρειάζεστε για τις πρώτες εβδομάδες είναι εδώ: κλειδιά, λογαριασμοί, internet και ζωή στη Λεμεσό."
+  },
+  facts:[
+    {k:"rent", v:{en:"1st of month",ru:"1-го числа",he:"ב-1 לחודש",uk:"1-го числа",zh:"每月1日",fr:"Le 1er du mois",el:"1η του μήνα"}},
+    {k:"fees", v:{en:"€45 / month",ru:"€45 / мес.",he:"‎€45 לחודש",uk:"€45 / міс.",zh:"每月 €45",fr:"45 € / mois",el:"€45 / μήνα"}},
+    {k:"parking", v:{en:"No. 12, underground",ru:"№12, подземная",he:"מס' 12, תת-קרקעי",uk:"№12, підземна",zh:"地下 12 号",fr:"N° 12, sous-sol",el:"Αρ. 12, υπόγειο"}},
+    {k:"bins", v:{en:"Mon · Thu",ru:"Пн · Чт",he:"ב' · ה'",uk:"Пн · Чт",zh:"周一 · 周四",fr:"Lun · Jeu",el:"Δευ · Πεμ"}}
+  ],
+  first:[
+    {en:"Keys: 2 apartment keys, 1 building fob, 1 mailbox key. Mailbox no. 12 is in the lobby.",
+     ru:"Ключи: 2 ключа от квартиры, 1 брелок от подъезда, 1 ключ от почтового ящика. Ящик №12 в холле.",
+     he:"מפתחות: 2 מפתחות לדירה, צ'יפ אחד לבניין ומפתח אחד לתיבת הדואר. תיבה מס' 12 נמצאת בלובי.",
+     uk:"Ключі: 2 ключі від квартири, 1 брелок від під'їзду, 1 ключ від поштової скриньки. Скринька №12 у холі.",
+     zh:"钥匙：公寓钥匙2把、楼门感应卡1个、信箱钥匙1把。12号信箱在大堂。",
+     fr:"Clés : 2 clés de l'appartement, 1 badge de l'immeuble, 1 clé de boîte aux lettres. Boîte n° 12 dans le hall.",
+     el:"Κλειδιά: 2 του διαμερίσματος, 1 μαγνητάκι πολυκατοικίας, 1 γραμματοκιβωτίου. Γραμματοκιβώτιο αρ. 12 στην είσοδο."},
+    {en:"On day one, photograph the electricity and water meters and any existing damage, and send the photos to us. This protects your deposit.",
+     ru:"В первый день сфотографируйте счётчики света и воды и любые повреждения и отправьте нам. Это защищает ваш депозит.",
+     he:"ביום הראשון צלמו את מוני החשמל והמים ואת כל נזק קיים, ושלחו לנו. זה מגן על הפיקדון שלכם.",
+     uk:"Першого дня сфотографуйте лічильники світла й води та будь-які пошкодження і надішліть нам. Це захищає ваш депозит.",
+     zh:"入住第一天，请拍下电表、水表及现有损坏并发给我们，这能保障您的押金。",
+     fr:"Le premier jour, photographiez les compteurs d'électricité et d'eau ainsi que tout dommage existant, et envoyez-nous les photos. Cela protège votre caution.",
+     el:"Την πρώτη μέρα φωτογραφίστε τους μετρητές ρεύματος και νερού και τυχόν ζημιές και στείλτε μας τις φωτογραφίες. Έτσι προστατεύεται η εγγύησή σας."},
+    {en:"Order internet on day one. Fibre installation usually takes 1–2 weeks.",
+     ru:"Закажите интернет в первый же день. Подключение оптоволокна обычно занимает 1–2 недели.",
+     he:"הזמינו אינטרנט כבר ביום הראשון. התקנת סיבים לוקחת בדרך כלל שבוע עד שבועיים.",
+     uk:"Замовте інтернет першого ж дня. Підключення оптоволокна зазвичай триває 1–2 тижні.",
+     zh:"请在第一天就预约网络，光纤安装通常需要1–2周。",
+     fr:"Commandez internet dès le premier jour. L'installation de la fibre prend en général 1 à 2 semaines.",
+     el:"Παραγγείλτε internet από την πρώτη μέρα. Η εγκατάσταση fibre παίρνει συνήθως 1–2 εβδομάδες."}
+  ],
+  bills:[
+    {t:{en:"Electricity (EAC)",ru:"Электричество (EAC)",he:"חשמל (EAC)",uk:"Електрика (EAC)",zh:"电费（EAC）",fr:"Électricité (EAC)",el:"Ρεύμα (ΑΗΚ)"},
+     b:{en:"The account must be in your name. Go to an EAC customer office with your passport and tenancy agreement. Bills arrive every two months. In summer, air conditioning is the biggest cost.",
+        ru:"Счёт нужно оформить на себя. Обратитесь в офис EAC с паспортом и договором аренды. Счета приходят раз в два месяца. Летом основная статья расходов — кондиционер.",
+        he:"החשבון צריך להיות על שמכם. גשו למשרד שירות לקוחות של EAC עם דרכון וחוזה שכירות. החשבון מגיע כל חודשיים. בקיץ המזגן הוא ההוצאה הגדולה ביותר.",
+        uk:"Рахунок потрібно оформити на себе. Зверніться до офісу EAC з паспортом і договором оренди. Рахунки надходять раз на два місяці. Улітку найбільша стаття — кондиціонер.",
+        zh:"电费账户需转到您名下。请携带护照和租房合同前往EAC客服办公室办理。账单每两个月一次，夏季空调是最大开销。",
+        fr:"Le compte doit être à votre nom. Rendez-vous dans une agence EAC avec votre passeport et votre bail. Les factures arrivent tous les deux mois. En été, la climatisation représente le plus gros coût.",
+        el:"Ο λογαριασμός πρέπει να μεταφερθεί στο όνομά σας. Πηγαίνετε σε γραφείο εξυπηρέτησης της ΑΗΚ με διαβατήριο και ενοικιαστήριο. Οι λογαριασμοί έρχονται κάθε δύο μήνες. Το καλοκαίρι το μεγαλύτερο κόστος είναι ο κλιματισμός."},
+     link:"https://www.eac.com.cy"},
+    {t:{en:"Water",ru:"Вода",he:"מים",uk:"Вода",zh:"水费",fr:"Eau",el:"Νερό"},
+     b:{en:"The water account stays in the landlord's name. We forward each bill to you and you pay it together with the next rent.",
+        ru:"Счёт за воду остаётся на имя владельца. Мы пересылаем вам каждый счёт, вы оплачиваете его вместе со следующей арендой.",
+        he:"חשבון המים נשאר על שם בעל הדירה. אנו מעבירים לכם כל חשבון ואתם משלמים אותו יחד עם שכר הדירה הבא.",
+        uk:"Рахунок за воду залишається на ім'я власника. Ми пересилаємо вам кожен рахунок, ви сплачуєте його разом із наступною орендою.",
+        zh:"水费账户保留在房东名下。我们会把每张账单转给您，您随下期房租一并支付。",
+        fr:"Le compte d'eau reste au nom du propriétaire. Nous vous transmettons chaque facture, que vous réglez avec le loyer suivant.",
+        el:"Ο λογαριασμός νερού μένει στο όνομα του ιδιοκτήτη. Σας προωθούμε κάθε λογαριασμό και τον πληρώνετε μαζί με το επόμενο ενοίκιο."}},
+    {t:{en:"Internet",ru:"Интернет",he:"אינטרנט",uk:"Інтернет",zh:"网络",fr:"Internet",el:"Internet"},
+     b:{en:"Main providers: Cyta, Epic and PrimeTel. The building has fibre. You need your passport and tenancy agreement to sign up.",
+        ru:"Основные провайдеры: Cyta, Epic и PrimeTel. В доме есть оптоволокно. Для подключения нужны паспорт и договор аренды.",
+        he:"הספקים העיקריים: Cyta, Epic ו-PrimeTel. בבניין יש סיבים. להרשמה צריך דרכון וחוזה שכירות.",
+        uk:"Основні провайдери: Cyta, Epic і PrimeTel. У будинку є оптоволокно. Для підключення потрібні паспорт і договір оренди.",
+        zh:"主要运营商：Cyta、Epic 和 PrimeTel。大楼已通光纤。办理需要护照和租房合同。",
+        fr:"Principaux fournisseurs : Cyta, Epic et PrimeTel. L'immeuble est raccordé à la fibre. Il faut votre passeport et votre bail pour vous abonner.",
+        el:"Κύριοι πάροχοι: Cyta, Epic και PrimeTel. Η πολυκατοικία έχει fibre. Για σύνδεση χρειάζεστε διαβατήριο και ενοικιαστήριο."}},
+    {t:{en:"Communal fees",ru:"Коммунальный сбор дома",he:"דמי ועד בית",uk:"Внесок на утримання будинку",zh:"物业费",fr:"Charges de copropriété",el:"Κοινόχρηστα"},
+     b:{en:"€45 per month for the lift, cleaning and the pool. Paid together with the rent.",
+        ru:"€45 в месяц за лифт, уборку и бассейн. Оплачивается вместе с арендой.",
+        he:"‎€45 לחודש עבור מעלית, ניקיון ובריכה. משולם יחד עם שכר הדירה.",
+        uk:"€45 на місяць за ліфт, прибирання та басейн. Сплачується разом з орендою.",
+        zh:"每月 €45，含电梯、清洁和泳池，随房租一并支付。",
+        fr:"45 € par mois pour l'ascenseur, le ménage et la piscine. Payé avec le loyer.",
+        el:"€45 τον μήνα για ασανσέρ, καθαριότητα και πισίνα. Πληρώνονται μαζί με το ενοίκιο."}}
+  ],
+  rules:[
+    {en:"Quiet hours: 14:00–16:00 and 23:00–07:00. Afternoon quiet hours are normal in Cyprus.",ru:"Тихие часы: 14:00–16:00 и 23:00–07:00. Дневная тишина — норма на Кипре.",he:"שעות שקט: 14:00–16:00 ו-23:00–07:00. שעות שקט בצהריים מקובלות בקפריסין.",uk:"Тихі години: 14:00–16:00 і 23:00–07:00. Денна тиша — норма на Кіпрі.",zh:"安静时段：14:00–16:00 和 23:00–07:00。午休安静时段在塞浦路斯很常见。",fr:"Heures de calme : 14h–16h et 23h–7h. Le calme en début d'après-midi est la norme à Chypre.",el:"Ώρες κοινής ησυχίας: 14:00–16:00 και 23:00–07:00."},
+    {en:"Recycling: blue bag for plastic, metal and cartons (PMD), separate bins for paper and glass by the entrance.",ru:"Сортировка: синий пакет для пластика, металла и тетрапаков (PMD), отдельные баки для бумаги и стекла у входа.",he:"מיחזור: שקית כחולה לפלסטיק, מתכת וקרטוני שתייה (PMD), פחים נפרדים לנייר ולזכוכית ליד הכניסה.",uk:"Сортування: синій пакет для пластику, металу й тетрапаків (PMD), окремі баки для паперу та скла біля входу.",zh:"垃圾分类：蓝色袋装塑料、金属和饮料盒（PMD），纸张和玻璃投放到入口旁的专用桶。",fr:"Tri : sac bleu pour plastique, métal et briques (PMD), bacs séparés pour papier et verre près de l'entrée.",el:"Ανακύκλωση: μπλε σακούλα για PMD, ξεχωριστοί κάδοι για χαρτί και γυαλί στην είσοδο."},
+    {en:"No barbecues on the balcony. Use the shared barbecue by the pool.",ru:"Барбекю на балконе запрещено. Используйте общий гриль у бассейна.",he:"אסור לעשות מנגל במרפסת. השתמשו במנגל המשותף ליד הבריכה.",uk:"Барбекю на балконі заборонено. Користуйтеся спільним грилем біля басейну.",zh:"阳台禁止烧烤，请使用泳池旁的公共烧烤区。",fr:"Pas de barbecue sur le balcon. Utilisez le barbecue commun près de la piscine.",el:"Όχι ψησταριά στο μπαλκόνι. Υπάρχει κοινόχρηστη δίπλα στην πισίνα."},
+    {en:"Report leaks and broken appliances within 24 hours.",ru:"Сообщайте о протечках и поломках техники в течение 24 часов.",he:"דווחו על נזילות ותקלות במכשירים תוך 24 שעות.",uk:"Повідомляйте про протікання й поломки техніки протягом 24 годин.",zh:"漏水或电器故障请在24小时内报告。",fr:"Signalez fuites et appareils en panne sous 24 heures.",el:"Ενημερώστε μας για διαρροές και βλάβες συσκευών εντός 24 ωρών."}
+  ],
+  life:[
+    {t:{en:"Residence registration",ru:"Регистрация проживания",he:"רישום תושבות",uk:"Реєстрація проживання",zh:"居留登记",fr:"Enregistrement de résidence",el:"Άδεια διαμονής"},
+     b:{en:"EU citizens staying over 3 months register with the Civil Registry and Migration Department within 4 months of arrival (certificate MEU1). Non-EU citizens need a residence permit from the same department.",
+        ru:"Граждане ЕС, живущие дольше 3 месяцев, регистрируются в Департаменте гражданского реестра и миграции в течение 4 месяцев после приезда (справка MEU1). Гражданам других стран нужен вид на жительство в том же департаменте.",
+        he:"אזרחי האיחוד האירופי שנשארים יותר מ-3 חודשים נרשמים במחלקת מרשם האוכלוסין וההגירה תוך 4 חודשים מההגעה (אישור MEU1). אזרחים מחוץ לאיחוד צריכים היתר שהייה מאותה מחלקה.",
+        uk:"Громадяни ЄС, які живуть понад 3 місяці, реєструються в Департаменті цивільного реєстру та міграції протягом 4 місяців після приїзду (довідка MEU1). Громадянам інших країн потрібен дозвіл на проживання від того ж департаменту.",
+        zh:"欧盟公民居住超过3个月，需在抵达后4个月内到民事登记与移民局登记（MEU1证明）。非欧盟公民需向同一部门申请居留许可。",
+        fr:"Les citoyens de l'UE restant plus de 3 mois s'enregistrent auprès du Département de l'état civil et de la migration dans les 4 mois suivant leur arrivée (certificat MEU1). Les ressortissants hors UE ont besoin d'un titre de séjour auprès du même département.",
+        el:"Πολίτες ΕΕ που μένουν πάνω από 3 μήνες δηλώνονται στο Τμήμα Αρχείου Πληθυσμού και Μετανάστευσης εντός 4 μηνών (βεβαίωση MEU1). Πολίτες τρίτων χωρών χρειάζονται άδεια διαμονής από το ίδιο τμήμα."}},
+    {t:{en:"Healthcare (GESY)",ru:"Медицина (GESY)",he:"בריאות (GESY)",uk:"Медицина (GESY)",zh:"医疗（GESY）",fr:"Santé (GESY)",el:"Υγεία (ΓεΣΥ)"},
+     b:{en:"Once you are a registered resident, choose a personal doctor in the national health system GESY. Until then, use private clinics or travel insurance.",
+        ru:"После регистрации как резидент выберите личного врача в государственной системе GESY. До этого пользуйтесь частными клиниками или страховкой.",
+        he:"לאחר שנרשמתם כתושבים, בחרו רופא אישי במערכת הבריאות הלאומית GESY. עד אז השתמשו במרפאות פרטיות או בביטוח.",
+        uk:"Після реєстрації як резидент оберіть особистого лікаря в державній системі GESY. До того користуйтеся приватними клініками або страховкою.",
+        zh:"登记为居民后，可在国家医疗系统 GESY 中选择家庭医生。在此之前请使用私立诊所或保险。",
+        fr:"Une fois résident enregistré, choisissez un médecin traitant dans le système national GESY. En attendant, utilisez les cliniques privées ou votre assurance.",
+        el:"Μόλις εγγραφείτε ως κάτοικοι, επιλέξτε προσωπικό ιατρό στο ΓεΣΥ. Μέχρι τότε, ιδιωτικά ιατρεία ή ασφάλεια."},
+     link:"https://www.gesy.org.cy"},
+    {t:{en:"Driving",ru:"Вождение",he:"נהיגה",uk:"Водіння",zh:"驾驶",fr:"Conduite",el:"Οδήγηση"},
+     b:{en:"Traffic drives on the left. EU licences are valid as they are. Other licences may need to be exchanged at the Road Transport Department.",
+        ru:"Движение левостороннее. Права ЕС действуют без замены. Другие права может потребоваться обменять в Департаменте дорожного транспорта.",
+        he:"התנועה בצד שמאל. רישיון מהאיחוד האירופי תקף כמו שהוא. רישיונות אחרים ייתכן שיש להמיר במחלקת התחבורה.",
+        uk:"Рух лівосторонній. Права ЄС дійсні без заміни. Інші права може знадобитися обміняти в Департаменті дорожнього транспорту.",
+        zh:"靠左行驶。欧盟驾照可直接使用，其他驾照可能需要到道路交通部门更换。",
+        fr:"On roule à gauche. Les permis de l'UE sont valables tels quels. Les autres peuvent devoir être échangés au Département des transports routiers.",
+        el:"Οδηγούμε αριστερά. Τα διπλώματα ΕΕ ισχύουν. Τα άλλα ίσως χρειάζονται ανταλλαγή στο Τμήμα Οδικών Μεταφορών."}},
+    {t:{en:"Getting around",ru:"Транспорт",he:"תחבורה",uk:"Транспорт",zh:"出行",fr:"Se déplacer",el:"Μετακίνηση"},
+     b:{en:"City buses run along the seafront. Airport shuttles go to Larnaca and Paphos airports from the city.",
+        ru:"Городские автобусы ходят вдоль набережной. Из города есть шаттлы в аэропорты Ларнаки и Пафоса.",
+        he:"אוטובוסים עירוניים נוסעים לאורך הטיילת. מהעיר יוצאות הסעות לשדות התעופה לרנקה ופאפוס.",
+        uk:"Міські автобуси курсують уздовж набережної. З міста є шатли до аеропортів Ларнаки та Пафоса.",
+        zh:"市内公交沿海滨运行，市区有前往拉纳卡和帕福斯机场的机场大巴。",
+        fr:"Les bus urbains longent le front de mer. Des navettes relient la ville aux aéroports de Larnaca et Paphos.",
+        el:"Αστικά λεωφορεία κινούνται κατά μήκος της παραλίας. Υπάρχουν shuttle για τα αεροδρόμια Λάρνακας και Πάφου."}}
+  ],
+  sos:[{n:"112",t:{en:"Emergency",ru:"Экстренная служба",he:"חירום",uk:"Екстрена служба",zh:"紧急求助",fr:"Urgences",el:"Έκτακτη ανάγκη"}},
+       {n:"1818",t:{en:"EAC account & bills",ru:"EAC: счета",he:"EAC: חשבונות",uk:"EAC: рахунки",zh:"EAC 账户与账单",fr:"EAC : compte et factures",el:"ΑΗΚ: λογαριασμοί"}},
+       {n:"1800",t:{en:"EAC power faults",ru:"Аварии EAC",he:"תקלות חשמל EAC",uk:"Аварії EAC",zh:"EAC 停电报修",fr:"Pannes EAC",el:"Βλάβες ΑΗΚ"}}],
+  agent:{phone:"+357 25 000 000", note:{
+    en:"Maintenance and questions: WhatsApp, Mon–Fri 09:00–18:00. Emergencies (water leak, no power) any time.",
+    ru:"Ремонт и вопросы: WhatsApp, пн–пт 09:00–18:00. Аварии (протечка, нет света) — в любое время.",
+    he:"תחזוקה ושאלות: WhatsApp, ב'–ו' 09:00–18:00. מקרי חירום (נזילה, אין חשמל) בכל שעה.",
+    uk:"Ремонт і питання: WhatsApp, пн–пт 09:00–18:00. Аварії (протікання, немає світла) — будь-коли.",
+    zh:"维修和咨询：WhatsApp，周一至周五 09:00–18:00。紧急情况（漏水、停电）随时联系。",
+    fr:"Entretien et questions : WhatsApp, lun–ven 9h–18h. Urgences (fuite, coupure) à toute heure.",
+    el:"Συντήρηση και ερωτήσεις: WhatsApp, Δευ–Παρ 09:00–18:00. Επείγοντα (διαρροή, χωρίς ρεύμα) οποτεδήποτε."}}
+};
+
+const UI = {
+  en:{first:"First days",bills:"Bills & utilities",rules:"Building rules",life:"Living in Cyprus",help:"Help",agent:"Your property manager",rent:"Rent due",fees:"Communal fees",parking:"Parking",bins:"Rubbish days",more:"Website",demo:"Example apartment",foot:"Resident guide"},
+  ru:{first:"Первые дни",bills:"Счета и услуги",rules:"Правила дома",life:"Жизнь на Кипре",help:"Помощь",agent:"Ваш управляющий",rent:"Оплата аренды",fees:"Сбор дома",parking:"Парковка",bins:"Вывоз мусора",more:"Сайт",demo:"Пример квартиры",foot:"Гид для жильцов"},
+  he:{first:"הימים הראשונים",bills:"חשבונות ושירותים",rules:"כללי הבניין",life:"החיים בקפריסין",help:"עזרה",agent:"מנהל הנכס",rent:"תשלום שכירות",fees:"ועד בית",parking:"חניה",bins:"פינוי אשפה",more:"אתר",demo:"דירה לדוגמה",foot:"מדריך לדיירים"},
+  uk:{first:"Перші дні",bills:"Рахунки й послуги",rules:"Правила будинку",life:"Життя на Кіпрі",help:"Допомога",agent:"Ваш керуючий",rent:"Оплата оренди",fees:"Внесок будинку",parking:"Паркування",bins:"Вивіз сміття",more:"Сайт",demo:"Приклад квартири",foot:"Гід для мешканців"},
+  zh:{first:"入住初期",bills:"账单与水电",rules:"楼宇规定",life:"在塞浦路斯生活",help:"帮助",agent:"物业经理",rent:"房租缴纳",fees:"物业费",parking:"车位",bins:"垃圾收集",more:"网站",demo:"示例公寓",foot:"住户指南"},
+  fr:{first:"Premiers jours",bills:"Factures et services",rules:"Règles de l'immeuble",life:"Vivre à Chypre",help:"Aide",agent:"Votre gestionnaire",rent:"Loyer dû",fees:"Charges",parking:"Parking",bins:"Poubelles",more:"Site web",demo:"Appartement d'exemple",foot:"Guide du résident"},
+  el:{first:"Πρώτες μέρες",bills:"Λογαριασμοί",rules:"Κανόνες πολυκατοικίας",life:"Ζωή στην Κύπρο",help:"Βοήθεια",agent:"Διαχειριστής ακινήτου",rent:"Ενοίκιο",fees:"Κοινόχρηστα",parking:"Στάθμευση",bins:"Σκουπίδια",more:"Ιστοσελίδα",demo:"Παράδειγμα διαμερίσματος",foot:"Οδηγός ενοικιαστή"}
+};
+const LANGS = {en:"EN",ru:"RU",he:"עב",uk:"UA",zh:"中文",fr:"FR",el:"ΕΛ"};
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let lang = "en";
+try { const s = localStorage.getItem("guide-lang"); if (s && UI[s]) lang = s; else {
+  const b = (navigator.language||"en").slice(0,2).replace("iw","he"); if (UI[b]) lang = b; } } catch(e) {}
+
+function render(){
+  const u = UI[lang], L = o => o[lang] || o.en;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "he" ? "rtl" : "ltr";
+  $("langs").innerHTML = Object.entries(LANGS).map(([k,v])=>`<button type="button" data-l="${k}" lang="${k}" aria-pressed="${k===lang}">${v}</button>`).join("");
+  $("area").textContent = L(DATA.area);
+  $("name").textContent = DATA.name;
+  $("welcome").textContent = L(DATA.welcome);
+  $("demo").textContent = u.demo;
+  $("facts").innerHTML = DATA.facts.map(f=>`<div class="fact"><span class="k">${u[f.k]}</span><span class="v">${esc(L(f.v))}</span></div>`).join("");
+  document.querySelectorAll("[data-t]").forEach(el=>el.textContent = u[el.dataset.t]);
+  $("nav").innerHTML = ["first","bills","rules","life","help"].map(s=>`<a href="#${s}">${u[s]}</a>`).join("");
+  $("firstList").innerHTML = DATA.first.map(a=>`<li class="card"><p>${esc(L(a))}</p></li>`).join("");
+  const acc = x => `<details><summary>${esc(L(x.t))}</summary><div class="b"><p>${esc(L(x.b))}</p>${x.link?`<a class="ltr" href="${x.link}" target="_blank" rel="noopener">${u.more}: ${x.link.replace("https://www.","")}</a>`:""}</div></details>`;
+  $("billsList").innerHTML = DATA.bills.map(acc).join("");
+  $("lifeList").innerHTML = DATA.life.map(acc).join("");
+  $("rulesList").innerHTML = DATA.rules.map((r,i)=>`<li><span class="n">${i+1}</span><span>${esc(L(r))}</span></li>`).join("");
+  $("sos").innerHTML = DATA.sos.map(s=>`<div><b class="ltr">${esc(s.n)}</b><span>${esc(L(s.t))}</span></div>`).join("");
+  $("hostNum").textContent = DATA.agent.phone;
+  $("hostNote").textContent = L(DATA.agent.note);
+  $("foot").textContent = `${DATA.name} · ${u.foot}`;
+}
+$("langs").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return;
+  lang=b.dataset.l; try{localStorage.setItem("guide-lang",lang)}catch(_){} render(); });
+render();
+</script>
+</body>
+</html>
