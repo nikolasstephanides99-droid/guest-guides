@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>html{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<title>Villa Thalassa Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: single mobile column; key-facts strip up top, sticky section nav, sections below. */
+:root{
+  --bg:#F3F6F6; --surface:#FFFFFF; --fg:#13282B; --muted:#5A6E71; --line:#D9E2E2;
+  --accent:#0E6670; --accent-ink:#FFFFFF; --sun:#E8B23A; --chip:#E4EEEE;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0D1A1C; --surface:#152A2D; --fg:#E6EFEF; --muted:#94AAAD; --line:#25403F;
+  --accent:#4FC0C9; --accent-ink:#06282B; --sun:#F0C25A; --chip:#1C3638; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1A1C; --surface:#152A2D; --fg:#E6EFEF; --muted:#94AAAD; --line:#25403F;
+  --accent:#4FC0C9; --accent-ink:#06282B; --sun:#F0C25A; --chip:#1C3638; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:2rem;line-height:1.1;font-weight:700}
+h2{font-size:1.3rem;font-weight:700}
+h3{font-size:1rem;font-weight:500}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.eyebrow{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.langs{display:flex;gap:4px}
+.langs button{font:600 .8rem var(--body);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:6px;padding:6px 9px;cursor:pointer}
+.langs button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.hello{margin-block:14px 18px;display:grid;gap:6px}
+.hello p{margin:0;color:var(--muted);max-width:60ch}
+.demo{display:inline-block;font-size:.72rem;background:var(--sun);color:#3A2A00;border-radius:4px;padding:2px 7px;font-weight:600;width:max-content}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:2px;min-width:0}
+.fact .k{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.fact .v{font:700 1.15rem var(--display);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.fact.wifi{grid-column:1/-1;grid-template-columns:1fr auto;align-items:center;gap:4px 12px}
+.fact.wifi .meta{display:grid;gap:2px;min-width:0}
+.copy{font:600 .85rem var(--body);background:var(--accent);color:var(--accent-ink);border:0;border-radius:8px;padding:10px 14px;cursor:pointer}
+nav.sec{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);margin-top:18px;padding-block:8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.sec a{flex:none;font-size:.85rem;font-weight:500;color:var(--fg);text-decoration:none;background:var(--chip);border-radius:999px;padding:6px 12px}
+section{margin-top:26px;display:grid;gap:10px}
+.list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+summary{cursor:pointer;padding:12px 14px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::after{content:"+";color:var(--muted);font-weight:500}
+details[open] summary::after{content:"–"}
+details .b{padding:0 14px 14px;color:var(--fg)}
+details .b p{margin:0 0 6px}
+.rules li{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.rules li:last-child{border-bottom:0}
+.rules .n{font:700 .85rem var(--display);color:var(--accent);min-width:1.4em}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filters button{font:500 .85rem var(--body);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:6px 12px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.place{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px}
+.place .row{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.place .dist{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+.place p{margin:0;color:var(--muted);font-size:.9rem}
+.place a{font-size:.85rem;font-weight:600;color:var(--accent);text-decoration:none;width:max-content}
+.sos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.sos div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid}
+.sos b{font:700 1.2rem var(--display);font-variant-numeric:tabular-nums}
+.sos span{font-size:.82rem;color:var(--muted)}
+.host{background:var(--accent);color:var(--accent-ink);border-radius:12px;padding:16px;display:grid;gap:6px}
+.host .num{font:700 1.3rem var(--display);user-select:all;font-variant-numeric:tabular-nums}
+.host p{margin:0;opacity:.9}
+footer{margin-top:28px;font-size:.75rem;color:var(--muted);text-align:center}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:.85rem;font-weight:600}
+@media (max-width:380px){.sos{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top">
+    <span class="eyebrow" id="area"></span>
+    <div class="langs" id="langs" role="group" aria-label="Language"></div>
+  </div>
+  <div class="hello">
+    <h1 id="name"></h1>
+    <p id="welcome"></p>
+    <span class="demo" id="demo"></span>
+  </div>
+
+  <div class="facts">
+    <div class="fact wifi">
+      <div class="meta"><span class="k">Wi-Fi</span><span class="v" id="wifiName"></span><span id="wifiPass" style="font-variant-numeric:tabular-nums;color:var(--muted)"></span></div>
+      <button class="copy" id="copyBtn" type="button"></button>
+    </div>
+    <div class="fact"><span class="k" id="kIn"></span><span class="v" id="vIn"></span></div>
+    <div class="fact"><span class="k" id="kOut"></span><span class="v" id="vOut"></span></div>
+    <div class="fact"><span class="k" id="kCode"></span><span class="v" id="vCode"></span></div>
+    <div class="fact"><span class="k" id="kPark"></span><span class="v" id="vPark" style="font-size:.95rem"></span></div>
+  </div>
+
+  <nav class="sec" id="nav"></nav>
+
+  <section id="arrival"><h2 data-t="arrival"></h2><ul class="list" id="arrivalList"></ul></section>
+  <section id="house"><h2 data-t="house"></h2><div class="list" id="houseList"></div></section>
+  <section id="rules"><h2 data-t="rules"></h2><ul class="list rules" id="rulesList"></ul></section>
+  <section id="local"><h2 data-t="local"></h2><div class="filters" id="filters"></div><div class="list" id="placesList"></div></section>
+  <section id="help"><h2 data-t="help"></h2><div class="sos" id="sos"></div>
+    <div class="host"><span class="eyebrow" style="color:inherit;opacity:.8" data-t="host"></span><span class="num" id="hostNum"></span><p id="hostNote"></p></div>
+  </section>
+  <footer id="foot"></footer>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ===== Per-property content. New property = copy this file, edit DATA. ===== */
+const DATA = {
+  name: "Villa Thalassa",
+  area: { en:"Peyia · Paphos, Cyprus", el:"Πέγεια · Πάφος, Κύπρος", de:"Peyia · Paphos, Zypern", ru:"Пейя · Пафос, Кипр" },
+  welcome: {
+    en:"Welcome! Everything you need for your stay is on this page. Save it to your home screen.",
+    el:"Καλώς ήρθατε! Ό,τι χρειάζεστε για τη διαμονή σας είναι σε αυτή τη σελίδα.",
+    de:"Willkommen! Alles für Ihren Aufenthalt finden Sie auf dieser Seite.",
+    ru:"Добро пожаловать! Всё необходимое для вашего отдыха — на этой странице."
+  },
+  wifi: { name:"Thalassa_5G", pass:"sunset2026" },
+  checkin:"15:00", checkout:"11:00", doorCode:"4 8 1 9 #",
+  parking:{ en:"Private, 2 cars", el:"Ιδιωτικό, 2 αυτ.", de:"Privat, 2 Autos", ru:"Своя, 2 авто" },
+  host:{ phone:"+357 99 000 000", note:{
+    en:"WhatsApp is fastest. We reply 08:00–22:00.",
+    el:"Το WhatsApp είναι το πιο γρήγορο. Απαντάμε 08:00–22:00.",
+    de:"Am schnellsten per WhatsApp. Antwort 08:00–22:00.",
+    ru:"Быстрее всего в WhatsApp. Отвечаем 08:00–22:00." } },
+  arrival:[
+    { en:"From Paphos Airport (PFO): 35 min by car. Follow B6 to Paphos, then signs for Coral Bay / Peyia.",
+      el:"Από το αεροδρόμιο Πάφου (PFO): 35' με αυτοκίνητο. B6 προς Πάφο, μετά πινακίδες Coral Bay / Πέγεια.",
+      de:"Vom Flughafen Paphos (PFO): 35 Min. mit dem Auto. B6 Richtung Paphos, dann Coral Bay / Peyia.",
+      ru:"Из аэропорта Пафоса (PFO): 35 мин на машине. B6 на Пафос, далее указатели Coral Bay / Пейя." },
+    { en:"The gate opens with the same code as the door. Key box is to the left of the front door.",
+      el:"Η αυλόπορτα ανοίγει με τον ίδιο κωδικό. Το κουτί κλειδιών είναι αριστερά από την πόρτα.",
+      de:"Das Tor öffnet mit demselben Code. Der Schlüsselkasten ist links neben der Haustür.",
+      ru:"Ворота открываются тем же кодом. Ящик с ключами — слева от входной двери." },
+    { en:"Driving is on the LEFT in Cyprus. Speed cameras are common on the B6.",
+      el:"Στην Κύπρο οδηγούμε ΑΡΙΣΤΕΡΑ. Υπάρχουν πολλές κάμερες ταχύτητας στον B6.",
+      de:"In Zypern herrscht LINKSverkehr. Auf der B6 gibt es viele Blitzer.",
+      ru:"На Кипре ЛЕВОСТОРОННЕЕ движение. На B6 много камер скорости." }
+  ],
+  house:[
+    { t:{en:"Hot water (solar + boiler)",el:"Ζεστό νερό (ηλιακός + θερμοσίφωνας)",de:"Warmwasser (Solar + Boiler)",ru:"Горячая вода (солнечный + бойлер)"},
+      b:{en:"Solar heats the water on sunny days. On cloudy days or in the evening, switch on the 'WATER' switch in the hallway for 30 minutes, then switch it off.",
+         el:"Ο ηλιακός ζεσταίνει το νερό τις ηλιόλουστες μέρες. Με συννεφιά ή βράδυ, ανάψτε τον διακόπτη «WATER» στον διάδρομο για 30', μετά κλείστε τον.",
+         de:"An sonnigen Tagen heizt die Solaranlage. Bei Wolken oder abends den Schalter 'WATER' im Flur 30 Minuten einschalten, dann aus.",
+         ru:"В солнечные дни воду греет солнечная панель. В пасмурную погоду или вечером включите 'WATER' в коридоре на 30 минут, затем выключите."} },
+    { t:{en:"Air conditioning",el:"Κλιματισμός",de:"Klimaanlage",ru:"Кондиционер"},
+      b:{en:"Remote is in the drawer under the TV. Please keep windows closed while A/C is on and set 24–26°C.",
+         el:"Το τηλεχειριστήριο είναι στο συρτάρι κάτω από την TV. Κλειστά παράθυρα όταν λειτουργεί, 24–26°C.",
+         de:"Fernbedienung in der Schublade unter dem TV. Fenster bitte geschlossen halten, 24–26°C.",
+         ru:"Пульт в ящике под телевизором. Закрывайте окна при работе, 24–26°C."} },
+    { t:{en:"Pool",el:"Πισίνα",de:"Pool",ru:"Бассейн"},
+      b:{en:"Open 08:00–21:00. No lifeguard. Children must be supervised. No glass by the pool.",
+         el:"Ανοιχτή 08:00–21:00. Χωρίς ναυαγοσώστη. Παιδιά μόνο με επίβλεψη. Όχι γυάλινα κοντά στην πισίνα.",
+         de:"Geöffnet 08:00–21:00. Keine Aufsicht. Kinder nur unter Aufsicht. Kein Glas am Pool.",
+         ru:"Открыт 08:00–21:00. Без спасателя. Дети только под присмотром. Без стекла у бассейна."} },
+    { t:{en:"Rubbish & recycling",el:"Σκουπίδια & ανακύκλωση",de:"Müll & Recycling",ru:"Мусор и переработка"},
+      b:{en:"Bins are at the end of the street. Blue bag (PMD) is collected Tuesday, general waste Monday & Thursday.",
+         el:"Κάδοι στο τέλος του δρόμου. Μπλε σακούλα (PMD) Τρίτη, γενικά σκουπίδια Δευτέρα & Πέμπτη.",
+         de:"Tonnen am Ende der Straße. Blauer Sack (PMD) dienstags, Restmüll montags & donnerstags.",
+         ru:"Баки в конце улицы. Синий пакет (PMD) — вторник, остальное — понедельник и четверг."} }
+  ],
+  rules:[
+    {en:"No smoking inside.",el:"Απαγορεύεται το κάπνισμα μέσα.",de:"Rauchen im Haus verboten.",ru:"Не курить в доме."},
+    {en:"Quiet hours 23:00–08:00.",el:"Ώρες κοινής ησυχίας 23:00–08:00.",de:"Nachtruhe 23:00–08:00.",ru:"Тишина с 23:00 до 08:00."},
+    {en:"No parties or extra guests.",el:"Όχι πάρτι ή επιπλέον άτομα.",de:"Keine Partys oder zusätzliche Gäste.",ru:"Без вечеринок и лишних гостей."},
+    {en:"At check-out: leave keys in the box, switch off A/C, close windows.",el:"Στην αναχώρηση: κλειδιά στο κουτί, κλείστε A/C και παράθυρα.",de:"Beim Check-out: Schlüssel in den Kasten, Klimaanlage aus, Fenster zu.",ru:"При выезде: ключи в ящик, выключить кондиционер, закрыть окна."}
+  ],
+  places:[
+    { cat:"eat", name:"Tavern Example (meze)", km:"1.2 km", q:"Peyia taverna",
+      d:{en:"Order the full meze, come hungry. Book on weekends.",el:"Πάρτε πλήρη μεζέ. Κράτηση τα Σαββατοκύριακα.",de:"Volles Meze bestellen. Am Wochenende reservieren.",ru:"Берите полное мезе. На выходных бронируйте."} },
+    { cat:"beach", name:"Coral Bay", km:"3 km", q:"Coral Bay Beach Peyia",
+      d:{en:"Sandy, shallow water, sunbeds. Best for families.",el:"Αμμουδιά, ρηχά νερά, ξαπλώστρες. Ιδανική για οικογένειες.",de:"Sandstrand, flaches Wasser, Liegen. Ideal für Familien.",ru:"Песок, мелко, шезлонги. Отлично для семей."} },
+    { cat:"beach", name:"Sea Caves", km:"4 km", q:"Sea Caves Peyia",
+      d:{en:"Cliffs and clear water. Go at sunset. No facilities.",el:"Βράχια και καθαρά νερά. Πηγαίνετε στο ηλιοβασίλεμα. Χωρίς παροχές.",de:"Klippen, klares Wasser. Zum Sonnenuntergang. Keine Infrastruktur.",ru:"Скалы и чистая вода. Лучше на закате. Без инфраструктуры."} },
+    { cat:"beach", name:"Lara Bay", km:"18 km", q:"Lara Bay Akamas",
+      d:{en:"Turtle nesting beach in Akamas. Dirt road, 4x4 recommended.",el:"Παραλία ωοτοκίας χελωνών στον Ακάμα. Χωματόδρομος, καλύτερα 4x4.",de:"Schildkrötenstrand in Akamas. Schotterpiste, 4x4 empfohlen.",ru:"Пляж черепах в Акамасе. Грунтовка, лучше 4x4."} },
+    { cat:"shop", name:"Supermarket", km:"0.8 km", q:"supermarket Peyia",
+      d:{en:"Open daily 08:00–21:00.",el:"Ανοιχτό καθημερινά 08:00–21:00.",de:"Täglich 08:00–21:00.",ru:"Ежедневно 08:00–21:00."} },
+    { cat:"shop", name:"Pharmacy", km:"1 km", q:"pharmacy Peyia",
+      d:{en:"For night pharmacies call 1414 (Paphos list).",el:"Εφημερεύοντα φαρμακεία: 1414.",de:"Notdienst-Apotheken: 1414.",ru:"Дежурные аптеки: 1414."} }
+  ],
+  sos:[ {n:"112",t:{en:"Emergency",el:"Έκτακτη ανάγκη",de:"Notruf",ru:"Экстренная"}},
+        {n:"1414",t:{en:"Night pharmacies",el:"Εφημερεύοντα",de:"Notapotheken",ru:"Дежурные аптеки"}},
+        {n:"+357 26 803 100",t:{en:"Paphos Hospital",el:"Νοσοκομείο Πάφου",de:"Krankenhaus Paphos",ru:"Больница Пафоса"}} ]
+};
+
+/* ===== UI strings ===== */
+const UI = {
+  en:{copy:"Copy password",copied:"Password copied",in:"Check-in",out:"Check-out",code:"Door code",park:"Parking",arrival:"Getting here",house:"How the house works",rules:"House rules",local:"Local picks",help:"Help",host:"Your host",all:"All",eat:"Eat",beach:"Beaches",shop:"Shops",map:"Open in Maps",demo:"Example property",foot:"Guest guide"},
+  el:{copy:"Αντιγραφή κωδικού",copied:"Ο κωδικός αντιγράφηκε",in:"Άφιξη",out:"Αναχώρηση",code:"Κωδικός πόρτας",park:"Στάθμευση",arrival:"Πώς θα έρθετε",house:"Το σπίτι",rules:"Κανόνες",local:"Προτάσεις",help:"Βοήθεια",host:"Ο οικοδεσπότης",all:"Όλα",eat:"Φαγητό",beach:"Παραλίες",shop:"Καταστήματα",map:"Άνοιγμα στον χάρτη",demo:"Παράδειγμα καταλύματος",foot:"Οδηγός επισκέπτη"},
+  de:{copy:"Passwort kopieren",copied:"Passwort kopiert",in:"Check-in",out:"Check-out",code:"Türcode",park:"Parken",arrival:"Anreise",house:"Das Haus",rules:"Hausregeln",local:"Tipps",help:"Hilfe",host:"Gastgeber",all:"Alle",eat:"Essen",beach:"Strände",shop:"Läden",map:"In Karten öffnen",demo:"Beispielunterkunft",foot:"Gästemappe"},
+  ru:{copy:"Копировать пароль",copied:"Пароль скопирован",in:"Заезд",out:"Выезд",code:"Код двери",park:"Парковка",arrival:"Как добраться",house:"Как всё устроено",rules:"Правила",local:"Рекомендации",help:"Помощь",host:"Хозяин",all:"Все",eat:"Еда",beach:"Пляжи",shop:"Магазины",map:"Открыть на карте",demo:"Пример объекта",foot:"Гид для гостей"}
+};
+const LANGS = {en:"EN",el:"ΕΛ",de:"DE",ru:"RU"};
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let lang = "en", cat = "all";
+try { const s = localStorage.getItem("guide-lang"); if (s && UI[s]) lang = s; else {
+  const b = (navigator.language||"en").slice(0,2); if (UI[b]) lang = b; } } catch(e) {}
+
+function render(){
+  const u = UI[lang], L = o => o[lang] || o.en;
+  document.documentElement.lang = lang;
+  $("langs").innerHTML = Object.entries(LANGS).map(([k,v])=>`<button type="button" data-l="${k}" aria-pressed="${k===lang}">${v}</button>`).join("");
+  $("area").textContent = L(DATA.area);
+  $("name").textContent = DATA.name;
+  $("welcome").textContent = L(DATA.welcome);
+  $("demo").textContent = u.demo;
+  $("wifiName").textContent = DATA.wifi.name;
+  $("wifiPass").textContent = DATA.wifi.pass;
+  $("copyBtn").textContent = u.copy;
+  $("kIn").textContent = u.in; $("vIn").textContent = DATA.checkin;
+  $("kOut").textContent = u.out; $("vOut").textContent = DATA.checkout;
+  $("kCode").textContent = u.code; $("vCode").textContent = DATA.doorCode;
+  $("kPark").textContent = u.park; $("vPark").textContent = L(DATA.parking);
+  document.querySelectorAll("[data-t]").forEach(el=>el.textContent = u[el.dataset.t]);
+  $("nav").innerHTML = ["arrival","house","rules","local","help"].map(s=>`<a href="#${s}">${u[s]}</a>`).join("");
+  $("arrivalList").innerHTML = DATA.arrival.map(a=>`<li class="place"><p style="color:var(--fg);font-size:.95rem">${esc(L(a))}</p></li>`).join("");
+  $("houseList").innerHTML = DATA.house.map(h=>`<details><summary>${esc(L(h.t))}</summary><div class="b"><p>${esc(L(h.b))}</p></div></details>`).join("");
+  $("rulesList").innerHTML = DATA.rules.map((r,i)=>`<li><span class="n">${i+1}</span><span>${esc(L(r))}</span></li>`).join("");
+  $("filters").innerHTML = ["all","eat","beach","shop"].map(c=>`<button type="button" data-c="${c}" aria-pressed="${c===cat}">${u[c]}</button>`).join("");
+  $("placesList").innerHTML = DATA.places.filter(p=>cat==="all"||p.cat===cat).map(p=>`
+    <div class="place"><div class="row"><h3>${esc(p.name)}</h3><span class="dist">${esc(p.km)}</span></div>
+    <p>${esc(L(p.d))}</p>
+    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.q)}" target="_blank" rel="noopener">${u.map} →</a></div>`).join("");
+  $("sos").innerHTML = DATA.sos.map(s=>`<div><b>${esc(s.n)}</b><span>${esc(L(s.t))}</span></div>`).join("");
+  $("hostNum").textContent = DATA.host.phone;
+  $("hostNote").textContent = L(DATA.host.note);
+  $("foot").textContent = `${DATA.name} · ${u.foot}`;
+}
+
+$("langs").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return;
+  lang=b.dataset.l; try{localStorage.setItem("guide-lang",lang)}catch(_){} render(); });
+$("filters").addEventListener("click", e=>{ const b=e.target.closest("button"); if(!b) return; cat=b.dataset.c; render(); });
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.hidden=false; clearTimeout(toast.h); toast.h=setTimeout(()=>t.hidden=true,1800); }
+$("copyBtn").addEventListener("click", ()=>{
+  const done=()=>toast(UI[lang].copied);
+  try { navigator.clipboard.writeText(DATA.wifi.pass).then(done).catch(sel); } catch(e){ sel(); }
+  function sel(){ const r=document.createRange(); r.selectNodeContents($("wifiPass")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); }
+});
+render();
+</script>
+</body>
+</html>
