@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lefko Dental Call</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one column, a phone-call card on top, the live transcript under it. */
+:root{
+  --bg:#eef3f2;--surface:#ffffff;--ink:#11201d;--muted:#5a6d69;--line:#d6e1de;
+  --accent:#0f7b6c;--accent-ink:#ffffff;--ai:#e4f3ef;--pt:#f1f3f6;--hl:#ffe9a8;
+  --display:"Manrope",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1514;--surface:#15201e;--ink:#e3eeeb;--muted:#93a7a2;--line:#26332f;--accent:#3cc4b0;--accent-ink:#06201b;--ai:#163430;--pt:#1c2527;--hl:#5a4a12;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1514;--surface:#15201e;--ink:#e3eeeb;--muted:#93a7a2;--line:#26332f;--accent:#3cc4b0;--accent-ink:#06201b;--ai:#163430;--pt:#1c2527;--hl:#5a4a12;color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:640px;margin:0 auto;padding-block:24px 40px;display:flex;flex-direction:column;gap:16px}
+h1{font:800 22px/1.2 var(--display);margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:4px 0 0}
+.call{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.who{display:flex;align-items:center;gap:12px}
+.av{width:48px;height:48px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:800 16px var(--display);flex:none}
+.who b{display:block;font:700 16px var(--display)}
+.who span{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tabs button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:8px 12px;font:500 14px var(--body);cursor:pointer}
+.tabs button[aria-pressed="true"]{border-color:var(--accent);background:var(--ai);color:var(--ink)}
+.ctrl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.play{border:0;border-radius:999px;background:var(--accent);color:var(--accent-ink);font:700 15px var(--display);padding:11px 22px;cursor:pointer}
+.stop{border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--ink);font:600 14px var(--body);padding:10px 16px;cursor:pointer}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.warn{font-size:13px;color:var(--muted)}
+.log{display:flex;flex-direction:column;gap:8px}
+.line{padding:10px 12px;border-radius:12px;max-width:88%;transition:background .2s}
+.line small{display:block;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.ai{background:var(--ai);align-self:flex-start}
+.pt{background:var(--pt);align-self:flex-end}
+.line.now{background:var(--hl)}
+.tool{align-self:center;font-size:12.5px;color:var(--muted);border:1px dashed var(--line);border-radius:8px;padding:4px 10px}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:14px}
+.note h2{font:700 15px var(--display);margin:0 0 6px}
+.note p{margin:6px 0}
+@media (prefers-reduced-motion:reduce){.line{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>Δοκιμαστικό τηλεφώνημα με την AI ρεσεψιόν</h1>
+    <p class="lead">Φανταστικό ιατρείο «Lefko Dental», Λεμεσός. Πάτα «Παίξε την κλήση» και άκουσε πώς μιλά και απαντά.</p>
+  </header>
+
+  <section class="call" aria-label="Κλήση">
+    <div class="who">
+      <div class="av">LD</div>
+      <div><b>Lefko Dental · AI ρεσεψιόν</b><span id="status">Έτοιμο</span></div>
+    </div>
+    <div class="tabs" role="group" aria-label="Σενάριο">
+      <button id="sc-book" data-s="book" aria-pressed="true">Ραντεβού για καθαρισμό</button>
+      <button id="sc-pain" data-s="pain">Πονόδοντος, επείγον</button>
+      <button id="sc-ru" data-s="ru">Ρωσόφωνος ασθενής</button>
+    </div>
+    <div class="ctrl">
+      <button class="play" id="play">▶ Παίξε την κλήση</button>
+      <button class="stop" id="stop">Σταμάτα</button>
+    </div>
+    <p class="warn" id="voiceInfo"></p>
+  </section>
+
+  <section class="log" id="log" aria-live="polite"></section>
+
+  <section class="note">
+    <h2>Τι ακούς εδώ</h2>
+    <p>Η φωνή είναι η δωρεάν φωνή του κινητού ή του υπολογιστή σου, γι' αυτό ακούγεται πιο ρομποτική. Σε πραγματική γραμμή η φωνή είναι φυσική (π.χ. ElevenLabs) και ο ασθενής μπορεί να διακόψει.</p>
+    <p>Τα λόγια είναι αυτά που γράφει το bot με τους κανόνες του: σύντομες φράσεις, μία ερώτηση τη φορά, επανάληψη ώρας και ημέρας πριν κλείσει.</p>
+  </section>
+</div>
+
+<script>
+"use strict";
+const SC={
+ book:{lang:"el-GR",turns:[
+  ["ai","Lefko Dental, καλησπέρα σας. Είμαι η ψηφιακή ρεσεψιόν. Πώς μπορώ να βοηθήσω;"],
+  ["pt","Καλησπέρα. Θα ήθελα να κλείσω ραντεβού για καθαρισμό."],
+  ["ai","Βεβαίως. Ποια μέρα σας βολεύει;"],
+  ["pt","Την Πέμπτη, αν γίνεται απόγευμα."],
+  ["tool","Ελέγχει ελεύθερες ώρες: Πέμπτη απόγευμα"],
+  ["ai","Την Πέμπτη το απόγευμα έχω τέσσερις και μισή ή έξι η ώρα. Ποια προτιμάτε;"],
+  ["pt","Τέσσερις και μισή."],
+  ["ai","Σε ποιο όνομα να το κλείσω;"],
+  ["pt","Ελένη Χριστοδούλου."],
+  ["tool","Κλείνει ραντεβού: Πέμπτη 16:30, καθαρισμός, 45 λεπτά"],
+  ["ai","Έγινε. Κυρία Χριστοδούλου, σας περιμένουμε την Πέμπτη στις τέσσερις και μισή για καθαρισμό. Κοστίζει πενήντα ευρώ. Θα σας στείλω υπενθύμιση στο WhatsApp μια μέρα πριν."],
+  ["pt","Τέλεια, ευχαριστώ πολύ."],
+  ["ai","Παρακαλώ. Καλό σας βράδυ."]]},
+ pain:{lang:"el-GR",turns:[
+  ["ai","Lefko Dental, καλημέρα σας. Πώς μπορώ να βοηθήσω;"],
+  ["pt","Καλημέρα. Με πονάει πολύ ένα δόντι από χθες το βράδυ. Τι να πάρω;"],
+  ["ai","Λυπάμαι που πονάτε. Δεν μπορώ να σας προτείνω φάρμακο, αυτό το κρίνει ο γιατρός. Έχετε πρήξιμο στο πρόσωπο ή πυρετό;"],
+  ["pt","Όχι, μόνο πόνο."],
+  ["tool","Ψάχνει την πρώτη ώρα για επείγον"],
+  ["ai","Εντάξει. Έχω σήμερα στις έντεκα και τέταρτο για επείγον. Σας βολεύει;"],
+  ["pt","Ναι, θα έρθω."],
+  ["ai","Το όνομά σας παρακαλώ;"],
+  ["pt","Μάριος Ανδρέου."],
+  ["tool","Κλείνει ραντεβού: σήμερα 11:15, επείγον"],
+  ["ai","Κύριε Ανδρέου, σας περιμένουμε σήμερα στις έντεκα και τέταρτο. Αν εμφανιστεί πρήξιμο ή πυρετός πριν έρθετε, καλέστε μας αμέσως. Περαστικά."]]},
+ ru:{lang:"ru-RU",turns:[
+  ["ai","Lefko Dental, здравствуйте. Чем могу помочь?"],
+  ["pt","Здравствуйте. Сколько стоит отбеливание?"],
+  ["ai","Отбеливание стоит двести пятьдесят евро. Окончательную цену подтверждает врач после осмотра. Хотите записаться?"],
+  ["pt","Да, на следующей неделе, утром."],
+  ["tool","Проверяет свободное время: следующая неделя, утро"],
+  ["ai","Могу предложить понедельник в десять или среду в девять тридцать. Что удобнее?"],
+  ["pt","Понедельник в десять."],
+  ["ai","На какое имя записать?"],
+  ["pt","Ирина Смирнова."],
+  ["tool","Записывает: понедельник 10:00, отбеливание"],
+  ["ai","Готово, Ирина. Ждём вас в понедельник в десять утра на отбеливание. Напоминание придёт в WhatsApp за день до визита."]]}
+};
+const $=id=>document.getElementById(id);
+const synth=window.speechSynthesis;
+let cur="book",run=0,t0=0,timer=null;
+function voicesFor(lang){
+  if(!synth)return [];
+  const base=lang.slice(0,2);
+  return synth.getVoices().filter(v=>v.lang&&v.lang.toLowerCase().startsWith(base));
+}
+function pick(lang){
+  const vs=voicesFor(lang);
+  const fem=vs.find(v=>/female|melina|google|natural|online|athina|milena|svetlana|dariya/i.test(v.name))||vs[0];
+  const other=vs.find(v=>v!==fem)||fem;
+  return {ai:fem,pt:other};
+}
+function info(){
+  const lang=SC[cur].lang,vs=voicesFor(lang);
+  $("voiceInfo").textContent=!synth?"Αυτός ο browser δεν έχει φωνή. Δοκίμασε Chrome ή Safari στο κινητό.":
+   vs.length?`Φωνή: ${vs[0].name}`:(lang==="el-GR"?"Δεν βρέθηκε ελληνική φωνή στη συσκευή. Στο κινητό: Ρυθμίσεις → Γλώσσα → Μετατροπή κειμένου σε ομιλία → Ελληνικά.":"Δεν βρέθηκε ρωσική φωνή στη συσκευή.");
+}
+function render(){
+  $("log").innerHTML="";
+  SC[cur].turns.forEach(([who,text],i)=>{
+    const d=document.createElement("div");d.id="l"+i;
+    if(who==="tool"){d.className="tool";d.textContent="⚙ "+text}
+    else{d.className="line "+who;d.innerHTML=`<small>${who==="ai"?"AI ρεσεψιόν":"Ασθενής"}</small>`;d.append(text)}
+    $("log").appendChild(d);
+  });
+}
+function clock(){const s=Math.floor((Date.now()-t0)/1000);$("status").textContent=`Σε κλήση · ${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}
+function stop(){run++;if(synth)synth.cancel();clearInterval(timer);$("status").textContent="Η κλήση τελείωσε";document.querySelectorAll(".now").forEach(e=>e.classList.remove("now"))}
+function say(text,voice,lang,who){
+  return new Promise(res=>{
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang=lang;if(voice)u.voice=voice;
+    u.rate=who==="ai"?1.0:1.05;u.pitch=who==="ai"?1.08:(voice&&pick(lang).ai===voice?0.8:1);
+    u.onend=res;u.onerror=res;synth.speak(u);
+  });
+}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function play(){
+  stop();const id=++run;if(!synth){info();return}
+  const sc=SC[cur],v=pick(sc.lang);
+  t0=Date.now();clock();timer=setInterval(clock,1000);
+  await wait(600);
+  for(let i=0;i<sc.turns.length;i++){
+    if(id!==run)return;
+    const [who,text]=sc.turns[i],el=$("l"+i);
+    document.querySelectorAll(".now").forEach(e=>e.classList.remove("now"));
+    el.classList.add("now");el.scrollIntoView({block:"nearest",behavior:"smooth"});
+    if(who==="tool"){await wait(700);continue}
+    await say(text,v[who],sc.lang,who);
+    await wait(who==="pt"?350:250);
+  }
+  if(id===run)stop();
+}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  stop();cur=b.dataset.s;
+  document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+  render();info();$("status").textContent="Έτοιμο";
+});
+$("play").onclick=play;$("stop").onclick=stop;
+if(synth)synth.onvoiceschanged=info;
+render();info();
+</script>
+</body>
+</html>
