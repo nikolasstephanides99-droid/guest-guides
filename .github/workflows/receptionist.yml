@@ -1,0 +1,55 @@
+name: receptionist
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "deploy = ανέβασμα bot, eval = δοκιμή prompt"
+        type: choice
+        options: [eval, deploy]
+        default: eval
+      model:
+        description: "Μοντέλο για eval (π.χ. claude-opus-5-5 ή claude-haiku-5-5)"
+        default: claude-opus-5-5
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: receptionist
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm test
+      - name: Eval
+        if: inputs.action == 'eval'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MODEL: ${{ inputs.model }}
+        run: npm run eval
+      - name: Deploy
+        if: inputs.action == 'deploy'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          S_ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          S_WA_TOKEN: ${{ secrets.WA_TOKEN }}
+          S_WA_PHONE_NUMBER_ID: ${{ secrets.WA_PHONE_NUMBER_ID }}
+          S_WA_APP_SECRET: ${{ secrets.WA_APP_SECRET }}
+          S_WA_VERIFY_TOKEN: ${{ secrets.WA_VERIFY_TOKEN }}
+          S_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          set -e
+          ID=$(npx wrangler d1 list --json | jq -r '.[] | select(.name=="dental-db") | .uuid')
+          if [ -z "$ID" ]; then
+            npx wrangler d1 create dental-db
+            ID=$(npx wrangler d1 list --json | jq -r '.[] | select(.name=="dental-db") | .uuid')
+          fi
+          sed -i "s/REPLACED_BY_DEPLOY_WORKFLOW/$ID/" wrangler.toml
+          npx wrangler d1 execute dental-db --remote --file schema.sql
+          npx wrangler deploy
+          jq -n '{ANTHROPIC_API_KEY:env.S_ANTHROPIC_API_KEY, WA_TOKEN:env.S_WA_TOKEN, WA_PHONE_NUMBER_ID:env.S_WA_PHONE_NUMBER_ID, WA_APP_SECRET:env.S_WA_APP_SECRET, WA_VERIFY_TOKEN:env.S_WA_VERIFY_TOKEN, ADMIN_KEY:env.S_ADMIN_KEY}' > /tmp/secrets.json
+          npx wrangler secret bulk /tmp/secrets.json
+          rm /tmp/secrets.json

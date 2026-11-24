@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Ρεσεψιόν – Demo οδοντιατρείου</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--bg:#eef1f4;--card:#fff;--ink:#14202b;--muted:#5d6b78;--line:#dde3e8;--wa:#075e54;--wa2:#25d366;--me:#d9fdd3;--bot:#fff;--chat:#efeae2;--accent:#0b7a6f;--warn:#b45309}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1418;--card:#182027;--ink:#e6edf2;--muted:#94a3b0;--line:#2a343d;--wa:#1f2c34;--me:#005c4b;--bot:#202c33;--chat:#0b141a;--accent:#3cc2b2;--warn:#f59e0b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{max-width:1100px;margin:0 auto;padding:20px 16px 8px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+h1{font-size:20px;margin:0}
+.sub{color:var(--muted);font-size:14px;margin:2px 0 0}
+.langs button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:600}
+.langs button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+main{max-width:1100px;margin:0 auto;padding:8px 16px 32px;display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:20px}
+@media (max-width:820px){main{grid-template-columns:1fr}}
+.phone{background:var(--card);border-radius:22px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.12);display:flex;flex-direction:column;height:640px;max-height:80vh;border:1px solid var(--line)}
+.top{background:var(--wa);color:#fff;padding:10px 14px;display:flex;gap:10px;align-items:center}
+.av{width:38px;height:38px;border-radius:50%;background:#fff;color:var(--wa);display:grid;place-items:center;font-weight:800}
+.top b{display:block;font-size:15px}.top small{opacity:.85;font-size:12px}
+#log{flex:1;overflow-y:auto;background:var(--chat);padding:12px 10px;display:flex;flex-direction:column;gap:6px}
+.m{max-width:82%;padding:7px 10px 5px;border-radius:9px;white-space:pre-wrap;word-wrap:break-word;box-shadow:0 1px .5px rgba(0,0,0,.13);font-size:14.5px}
+.m .t{display:block;text-align:right;font-size:11px;color:var(--muted);margin-top:2px}
+.bot{background:var(--bot);align-self:flex-start;border-top-left-radius:2px}
+.me{background:var(--me);align-self:flex-end;border-top-right-radius:2px}
+.typing{align-self:flex-start;background:var(--bot);padding:8px 12px;border-radius:9px;color:var(--muted);font-size:13px}
+#chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px;background:var(--chat);border-top:1px solid var(--line)}
+#chips button{border:1px solid var(--accent);color:var(--accent);background:var(--card);border-radius:16px;padding:6px 11px;font-size:13.5px;cursor:pointer}
+form{display:flex;gap:8px;padding:8px;background:var(--card)}
+form input{flex:1;border:1px solid var(--line);border-radius:20px;padding:10px 14px;font-size:15px;background:var(--bg);color:var(--ink)}
+form button{width:44px;border:0;border-radius:50%;background:var(--wa2);color:#fff;font-size:18px;cursor:pointer}
+.panel{display:flex;flex-direction:column;gap:16px;min-width:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.card h2{font-size:16px;margin:0 0 10px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em}
+tr.new td{animation:flash 2.4s}
+@keyframes flash{0%{background:rgba(37,211,102,.35)}100%{background:transparent}}
+.tag{display:inline-block;font-size:11.5px;padding:1px 7px;border-radius:10px;background:rgba(11,122,111,.12);color:var(--accent);font-weight:600}
+.tag.w{background:rgba(180,83,9,.12);color:var(--warn)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--bg);border-radius:10px;padding:10px}
+.stat b{display:block;font-size:22px}.stat span{font-size:12.5px;color:var(--muted)}
+.rem{background:var(--chat);border-radius:10px;padding:10px}
+.rem .m{max-width:100%}
+.note{font-size:13px;color:var(--muted)}
+.tablewrap{overflow-x:auto}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1 id="h1"></h1>
+    <p class="sub" id="sub"></p>
+  </div>
+  <div class="langs" id="langs">
+    <button data-l="el">ΕΛ</button><button data-l="en">EN</button><button data-l="ru">RU</button>
+  </div>
+</header>
+<main>
+  <section class="phone" aria-label="WhatsApp">
+    <div class="top"><div class="av">LD</div><div><b>Lefko Dental · Λεμεσός</b><small id="online"></small></div></div>
+    <div id="log" aria-live="polite"></div>
+    <div id="chips"></div>
+    <form id="f"><input id="in" autocomplete="off"><button aria-label="Send">➤</button></form>
+  </section>
+  <section class="panel">
+    <div class="card">
+      <h2 id="dashT"></h2>
+      <div class="stats">
+        <div class="stat"><b id="sMsg">0</b><span id="sMsgL"></span></div>
+        <div class="stat"><b id="sBook">3</b><span id="sBookL"></span></div>
+        <div class="stat"><b id="sStaff">0</b><span id="sStaffL"></span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2 id="apT"></h2>
+      <div class="tablewrap"><table><thead><tr><th id="th1"></th><th id="th2"></th><th id="th3"></th><th id="th4"></th></tr></thead><tbody id="ap"></tbody></table></div>
+    </div>
+    <div class="card">
+      <h2 id="remT"></h2>
+      <div class="rem"><div class="m bot" id="remMsg"></div></div>
+      <p class="note" id="remNote"></p>
+    </div>
+    <p class="note" id="disc"></p>
+  </section>
+</main>
+<script>
+"use strict";
+const CL={name:"Lefko Dental",phone:"+357 25 000 000",addr:{el:"Λεμεσός, κοντά στη Λεωφ. Μακαρίου",en:"Limassol, near Makariou Avenue",ru:"Лимассол, рядом с проспектом Макариу"}};
+const SERV=[
+ {id:"check",el:"Έλεγχος",en:"Check-up",ru:"Осмотр",p:"€30",d:30},
+ {id:"clean",el:"Καθαρισμός",en:"Cleaning",ru:"Чистка",p:"€50",d:45},
+ {id:"fill",el:"Σφράγισμα",en:"Filling",ru:"Пломба",p:"από €60",pe:"from €60",pr:"от €60",d:45},
+ {id:"white",el:"Λεύκανση",en:"Whitening",ru:"Отбеливание",p:"€250",d:60},
+ {id:"implant",el:"Εμφυτεύματα (συμβουλευτική)",en:"Implants (consultation)",ru:"Импланты (консультация)",p:"δωρεάν",pe:"free",pr:"бесплатно",d:30},
+ {id:"pain",el:"Πόνος / επείγον",en:"Pain / urgent",ru:"Боль / срочно",p:"€40",d:30}
+];
+const T={
+el:{h1:"AI Ρεσεψιόν στο WhatsApp – Demo",sub:"Δοκίμασε: γράψε σαν ασθενής. Απαντά 24/7, κλείνει ραντεβού, στέλνει υπενθυμίσεις.",online:"online · απαντά αμέσως",ph:"Γράψε μήνυμα…",
+dash:"Πίνακας ιατρείου (τι βλέπει η γραμματεία)",sMsg:"μηνύματα απαντήθηκαν",sBook:"ραντεβού κλεισμένα",sStaff:"χρειάζονται άνθρωπο",ap:"Επόμενα ραντεβού",th:["Ημέρα / ώρα","Ασθενής","Υπηρεσία","Κατάσταση"],ok:"επιβεβαιωμένο",nw:"νέο από AI",remTitle:"Αυτόματη υπενθύμιση (24 ώρες πριν)",remNote:"Στέλνεται αυτόματα. Ο ασθενής πατά «Επιβεβαιώνω» ή «Ακύρωση». Λιγότερα χαμένα ραντεβού.",
+disc:"Demo με φανταστικό ιατρείο. Το πραγματικό σύστημα χρησιμοποιεί AI και καταλαβαίνει ελεύθερο κείμενο σε κάθε γλώσσα.",
+hi:"Γεια σας! 👋 Είμαι η ψηφιακή ρεσεψιόν του Lefko Dental. Πώς μπορώ να βοηθήσω;",
+c:{book:"📅 Ραντεβού",price:"💶 Τιμές",hours:"🕘 Ωράριο",where:"📍 Διεύθυνση",pain:"🦷 Έχω πόνο"},
+askS:"Για ποια υπηρεσία;",askD:"Ποια μέρα σας βολεύει;",askH:d=>`Ελεύθερες ώρες για ${d}:`,askN:"Σε ποιο όνομα να το κλείσω;",
+conf:(s,d,h,n)=>`✅ Έγινε! Ραντεβού για ${s}\n📅 ${d}, ${h}\n👤 ${n}\n📍 ${CL.addr.el}\n\nΘα σας στείλω υπενθύμιση μια μέρα πριν. Για αλλαγή, γράψτε μου εδώ.`,
+prices:()=>"Ενδεικτικές τιμές:\n"+SERV.map(s=>`• ${s.el}: ${s.p}`).join("\n")+"\n\nΤην τελική τιμή την επιβεβαιώνει ο γιατρός μετά τον έλεγχο. Θέλετε ραντεβού;",
+hours:"Ωράριο:\nΔευ–Παρ 09:00–13:00 και 15:00–19:00\nΣάββατο 09:00–13:00\nΚυριακή κλειστά.",
+where:()=>`📍 ${CL.addr.el}\n🅿️ Υπάρχει πάρκινγκ μπροστά.\n📞 ${CL.phone}`,
+pain:"Λυπάμαι που πονάτε. 🙏 Κρατάμε κάθε μέρα ώρες για επείγοντα. Αν έχετε πρήξιμο στο πρόσωπο, πυρετό ή αιμορραγία που δεν σταματά, καλέστε τώρα στο "+CL.phone+".\n\nΘέλετε την πρώτη ελεύθερη ώρα;",
+staff:"Το προωθώ στη γραμματεία. Θα σας απαντήσει άνθρωπος μέσα στο ωράριο. 🙂",
+gesy:"Το ιατρείο δεν είναι στο ΓεΣΥ για οδοντιατρικές υπηρεσίες. Δεχόμαστε μετρητά, κάρτα και ιδιωτικές ασφάλειες (η κάλυψη εξαρτάται από το συμβόλαιό σας).",
+unk:"Μπορώ να βοηθήσω με ραντεβού, τιμές, ωράριο και διεύθυνση. Για κάτι άλλο, το προωθώ στη γραμματεία.",
+thx:"Παρακαλώ! Καλή σας μέρα. 🙂",first:"Πρώτη ελεύθερη",
+rem:(s,d,h)=>`Υπενθύμιση: έχετε ραντεβού στο Lefko Dental αύριο, ${d} στις ${h} (${s}).\n\n[ Επιβεβαιώνω ]   [ Ακύρωση ]`,
+days:["Κυρ","Δευ","Τρι","Τετ","Πεμ","Παρ","Σαβ"],today:"Σήμερα",tom:"Αύριο"},
+en:{h1:"WhatsApp AI Receptionist – Demo",sub:"Try it: write like a patient. Replies 24/7, books appointments, sends reminders.",online:"online · replies instantly",ph:"Type a message…",
+dash:"Clinic dashboard (what reception sees)",sMsg:"messages answered",sBook:"appointments booked",sStaff:"need a human",ap:"Upcoming appointments",th:["Day / time","Patient","Service","Status"],ok:"confirmed",nw:"new from AI",remTitle:"Automatic reminder (24 hours before)",remNote:"Sent automatically. The patient taps “Confirm” or “Cancel”. Fewer no-shows.",
+disc:"Demo with a fictional clinic. The real system uses AI and understands free text in any language.",
+hi:"Hello! 👋 I'm the digital receptionist of Lefko Dental. How can I help?",
+c:{book:"📅 Book",price:"💶 Prices",hours:"🕘 Hours",where:"📍 Address",pain:"🦷 I'm in pain"},
+askS:"Which service?",askD:"Which day suits you?",askH:d=>`Free times for ${d}:`,askN:"What name should I book it under?",
+conf:(s,d,h,n)=>`✅ Done! Appointment for ${s}\n📅 ${d}, ${h}\n👤 ${n}\n📍 ${CL.addr.en}\n\nI'll send you a reminder the day before. To change it, just message me here.`,
+prices:()=>"Indicative prices:\n"+SERV.map(s=>`• ${s.en}: ${s.pe||s.p}`).join("\n")+"\n\nThe dentist confirms the final price after the check-up. Would you like an appointment?",
+hours:"Opening hours:\nMon–Fri 09:00–13:00 and 15:00–19:00\nSaturday 09:00–13:00\nSunday closed.",
+where:()=>`📍 ${CL.addr.en}\n🅿️ Parking in front.\n📞 ${CL.phone}`,
+pain:"Sorry you're in pain. 🙏 We keep slots for emergencies every day. If you have facial swelling, fever or bleeding that won't stop, call now on "+CL.phone+".\n\nWould you like the first free slot?",
+staff:"I'm passing this to reception. A person will reply during opening hours. 🙂",
+gesy:"The clinic is not part of GESY for dental services. We accept cash, card and private insurance (cover depends on your policy).",
+unk:"I can help with appointments, prices, hours and the address. For anything else I'll pass it to reception.",
+thx:"You're welcome! Have a nice day. 🙂",first:"First free slot",
+rem:(s,d,h)=>`Reminder: you have an appointment at Lefko Dental tomorrow, ${d} at ${h} (${s}).\n\n[ Confirm ]   [ Cancel ]`,
+days:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],today:"Today",tom:"Tomorrow"},
+ru:{h1:"AI-администратор в WhatsApp – демо",sub:"Попробуйте: пишите как пациент. Отвечает 24/7, записывает на приём, напоминает.",online:"онлайн · отвечает сразу",ph:"Напишите сообщение…",
+dash:"Панель клиники (что видит регистратура)",sMsg:"сообщений отвечено",sBook:"записей",sStaff:"нужен человек",ap:"Ближайшие записи",th:["День / время","Пациент","Услуга","Статус"],ok:"подтверждено",nw:"новая от AI",remTitle:"Автонапоминание (за 24 часа)",remNote:"Отправляется автоматически. Пациент нажимает «Подтверждаю» или «Отмена». Меньше неявок.",
+disc:"Демо с вымышленной клиникой. Настоящая система использует AI и понимает свободный текст на любом языке.",
+hi:"Здравствуйте! 👋 Я цифровой администратор Lefko Dental. Чем могу помочь?",
+c:{book:"📅 Записаться",price:"💶 Цены",hours:"🕘 Часы работы",where:"📍 Адрес",pain:"🦷 Болит зуб"},
+askS:"Какая услуга?",askD:"Какой день вам удобен?",askH:d=>`Свободное время на ${d}:`,askN:"На какое имя записать?",
+conf:(s,d,h,n)=>`✅ Готово! Запись: ${s}\n📅 ${d}, ${h}\n👤 ${n}\n📍 ${CL.addr.ru}\n\nНапомню за день. Чтобы изменить, просто напишите мне здесь.`,
+prices:()=>"Ориентировочные цены:\n"+SERV.map(s=>`• ${s.ru}: ${s.pr||s.p}`).join("\n")+"\n\nОкончательную цену врач подтверждает после осмотра. Записать вас?",
+hours:"Часы работы:\nПн–Пт 09:00–13:00 и 15:00–19:00\nСуббота 09:00–13:00\nВоскресенье выходной.",
+where:()=>`📍 ${CL.addr.ru}\n🅿️ Парковка перед входом.\n📞 ${CL.phone}`,
+pain:"Сочувствую. 🙏 Каждый день у нас есть время для срочных случаев. Если есть отёк лица, температура или кровотечение, которое не останавливается, звоните сейчас: "+CL.phone+".\n\nЗаписать на ближайшее свободное время?",
+staff:"Передаю в регистратуру. Вам ответит сотрудник в рабочее время. 🙂",
+gesy:"Клиника не работает с GESY по стоматологии. Принимаем наличные, карту и частную страховку (покрытие зависит от полиса).",
+unk:"Я помогу с записью, ценами, часами работы и адресом. Остальное передам в регистратуру.",
+thx:"Пожалуйста! Хорошего дня. 🙂",first:"Ближайшее время",
+rem:(s,d,h)=>`Напоминание: завтра, ${d} в ${h}, у вас приём в Lefko Dental (${s}).\n\n[ Подтверждаю ]   [ Отмена ]`,
+days:["Вс","Пн","Вт","Ср","Чт","Пт","Сб"],today:"Сегодня",tom:"Завтра"}
+};
+let L="el",st={step:null},msgs=0,staff=0;
+const $=id=>document.getElementById(id);
+const log=$("log"),chips=$("chips");
+const now=()=>new Date().toTimeString().slice(0,5);
+function esc(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}
+function add(text,who){const d=document.createElement("div");d.className="m "+who;d.innerHTML=esc(text)+`<span class="t">${now()}${who==="me"?" ✓✓":""}</span>`;log.appendChild(d);log.scrollTop=log.scrollHeight}
+function say(text,ch){const t=document.createElement("div");t.className="typing";t.textContent="…";log.appendChild(t);log.scrollTop=log.scrollHeight;chips.innerHTML="";
+ setTimeout(()=>{t.remove();add(text,"bot");msgs++;$("sMsg").textContent=msgs;setChips(ch)},650+Math.min(text.length*6,900))}
+function setChips(list){chips.innerHTML="";(list||[]).forEach(([label,val])=>{const b=document.createElement("button");b.type="button";b.textContent=label;b.onclick=()=>user(label,val);chips.appendChild(b)})}
+function mainChips(){const c=T[L].c;return [[c.book,"#book"],[c.price,"#price"],[c.hours,"#hours"],[c.where,"#where"],[c.pain,"#pain"]]}
+function detect(s){if(/[Ѐ-ӿ]/.test(s))return"ru";if(/[Ͱ-Ͽἀ-῿]/.test(s))return"el";if(/[a-z]{3,}/i.test(s))return"en";return L}
+function days(){const out=[];const d=new Date();d.setHours(12,0,0,0);let i=0;while(out.length<5&&i<10){const x=new Date(d);x.setDate(d.getDate()+i);if(x.getDay()!==0)out.push(x);i++}return out}
+function dayLabel(x){const t=T[L];const diff=Math.round((x-new Date(new Date().setHours(12,0,0,0)))/864e5);const base=`${t.days[x.getDay()]} ${x.getDate()}/${x.getMonth()+1}`;return diff===0?`${t.today} (${base})`:diff===1?`${t.tom} (${base})`:base}
+function slots(x){const sat=x.getDay()===6;const all=sat?["09:00","09:30","10:30","11:00","12:00"]:["09:30","10:00","11:30","12:00","15:30","16:00","17:30","18:00"];const seed=x.getDate();let s=all.filter((_,i)=>(i+seed)%3!==0);
+ const today=new Date();if(x.toDateString()===today.toDateString()){const h=today.getHours()*60+today.getMinutes()+90;s=s.filter(v=>+v.slice(0,2)*60+ +v.slice(3)>h)}return s}
+function sname(id){const s=SERV.find(v=>v.id===id);return s?s[L]:id}
+function intent(s){s=s.toLowerCase();
+ const has=(...w)=>w.some(k=>s.includes(k));
+ if(has("ευχαριστ","thank","thx","спасибо","благодар"))return"thx";
+ if(has("πον","πόν","πρηξ","πρήξ","pain","hurt","ache","swell","emergenc","urgent","бол","отек","отёк","срочн"))return"pain";
+ if(has("γεσυ","γεσύ","gesy","ασφάλ","ασφαλ","insur","страх"))return"gesy";
+ if(has("τιμ","κοστ","κόστ","πόσο","ποσο","price","cost","how much","цен","стоим","сколько"))return"price";
+ if(has("ωράρ","ωραρ","ανοιχ","ανοικ","κλειστ","hour","open","close","час","работ","открыт"))return"hours";
+ if(has("διεύθ","διευθ","πού","που είσ","πάρκ","παρκ","address","where","location","parking","адрес","где","парков"))return"where";
+ if(has("άνθρωπ","ανθρωπ","γιατρ","human","person","doctor","speak","call me","человек","врач","позвон"))return"staff";
+ if(has("ραντε","κλείσ","κλεισ","book","appoint","slot","запис","приём","прием"))return"book";
+ for(const v of SERV)if(has(v.el.toLowerCase().slice(0,5),v.en.toLowerCase().slice(0,5),v.ru.toLowerCase().slice(0,5)))return"svc:"+v.id;
+ if(has("καθαρ","clean","чистк"))return"svc:clean";if(has("λευκ","whit","отбел"))return"svc:white";if(has("εμφυτ","implant","имплант"))return"svc:implant";if(has("σφραγ","filling","пломб"))return"svc:fill";
+ return"unk"}
+function user(text,val){add(text,"me");const t0=detect(text);if(!val&&t0!==L)setLang(t0,true);handle(val||text,!!val)}
+function askService(){say(T[L].askS,SERV.map(s=>[s[L],"#s:"+s.id]))}
+function askDay(){st.step="day";const ds=days();st.days=ds;say(T[L].askD,ds.map((x,i)=>[dayLabel(x),"#d:"+i]))}
+function handle(v,isChip){const t=T[L];
+ if(v.startsWith("#s:")){st.svc=v.slice(3);return askDay()}
+ if(v.startsWith("#d:")){const x=st.days[+v.slice(3)];st.day=x;const s=slots(x);if(!s.length){return say(t.askD,st.days.filter(d=>d!==x).map(d=>[dayLabel(d),"#d:"+st.days.indexOf(d)]))}st.step="time";return say(t.askH(dayLabel(x)),s.map(h=>[h,"#h:"+h]))}
+ if(v.startsWith("#h:")){st.time=v.slice(3);st.step="name";return say(t.askN,[])}
+ if(st.step==="name"&&!isChip){return book(v.trim().slice(0,40))}
+ if(v==="#first"){const ds=days();for(const x of ds){const s=slots(x);if(s.length){st.svc="pain";st.day=x;st.time=s[0];st.step="name";return say(`${t.first}: ${dayLabel(x)}, ${s[0]}\n\n${t.askN}`,[])}}}
+ const i=v.startsWith("#")?v.slice(1):intent(v);
+ if(i==="book"){st={step:"svc"};return askService()}
+ if(i.startsWith("svc:")){st={svc:i.slice(4)};return askDay()}
+ if(i==="price")return say(t.prices(),[[t.c.book,"#book"]]);
+ if(i==="hours")return say(t.hours,[[t.c.book,"#book"],[t.c.where,"#where"]]);
+ if(i==="where")return say(t.where(),[[t.c.book,"#book"],[t.c.hours,"#hours"]]);
+ if(i==="pain")return say(t.pain,[[t.first,"#first"],[t.c.book,"#book"]]);
+ if(i==="gesy")return say(t.gesy,[[t.c.price,"#price"],[t.c.book,"#book"]]);
+ if(i==="thx")return say(t.thx,mainChips());
+ if(i==="staff"){staff++;$("sStaff").textContent=staff;return say(t.staff,mainChips())}
+ return say(t.unk,mainChips())}
+const AP=[];
+function seed(){const ds=days();AP.push({d:ds[1],h:"10:00",n:"Μαρία Κ.",s:"clean"},{d:ds[1],h:"16:00",n:"Alex P.",s:"check"},{d:ds[2],h:"11:30",n:"Ирина С.",s:"white"})}
+function book(name){const t=T[L];AP.push({d:st.day,h:st.time,n:name,s:st.svc,isNew:true});AP.sort((a,b)=>a.d-b.d||a.h.localeCompare(b.h));
+ $("sBook").textContent=AP.length;say(t.conf(sname(st.svc),dayLabel(st.day),st.time,name),mainChips());renderAp();
+ $("remMsg").textContent=t.rem(sname(st.svc),dayLabel(st.day).replace(/^.*\((.*)\)$/,"$1"),st.time);st={step:null}}
+function renderAp(){const t=T[L];$("ap").innerHTML=AP.map(a=>`<tr class="${a.isNew?"new":""}"><td>${dayLabel(a.d)}<br><b>${a.h}</b></td><td>${esc(a.n)}</td><td>${sname(a.s)}</td><td><span class="tag ${a.isNew?"w":""}">${a.isNew?t.nw:t.ok}</span></td></tr>`).join("")}
+function setLang(l,silent){L=l;document.documentElement.lang=l;const t=T[l];
+ document.querySelectorAll("#langs button").forEach(b=>b.classList.toggle("on",b.dataset.l===l));
+ $("h1").textContent=t.h1;$("sub").textContent=t.sub;$("online").textContent=t.online;$("in").placeholder=t.ph;
+ $("dashT").textContent=t.dash;$("sMsgL").textContent=t.sMsg;$("sBookL").textContent=t.sBook;$("sStaffL").textContent=t.sStaff;
+ $("apT").textContent=t.ap;t.th.forEach((x,i)=>$("th"+(i+1)).textContent=x);$("remT").textContent=t.remTitle;$("remNote").textContent=t.remNote;$("disc").textContent=t.disc;
+ const a=AP[0];$("remMsg").textContent=t.rem(sname(a.s),dayLabel(a.d).replace(/^.*\((.*)\)$/,"$1"),a.h);
+ renderAp();if(!silent){log.innerHTML="";st={step:null};say(t.hi,mainChips())}}
+document.querySelectorAll("#langs button").forEach(b=>b.onclick=()=>setLang(b.dataset.l));
+$("f").onsubmit=e=>{e.preventDefault();const v=$("in").value.trim();if(!v)return;$("in").value="";user(v)};
+seed();$("sBook").textContent=AP.length;
+const q=new URLSearchParams(location.search).get("lang");setLang(T[q]?q:"el");
+</script>
+</body>
+</html>
