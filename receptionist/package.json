@@ -1,0 +1,16 @@
+{
+  "name": "dental-receptionist",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node test/unit.mjs",
+    "eval": "node test/eval.mjs",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.13.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.168.0"
+  }
+}

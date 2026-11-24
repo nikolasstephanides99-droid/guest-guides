@@ -1,0 +1,18 @@
+name = "dental-receptionist"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+MODEL = "claude-opus-5-5"
+GRAPH_VERSION = "v23.0"
+REMINDER_TEMPLATE = "appointment_reminder"
+REMINDER_LANG = "el"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dental-db"
+database_id = "REPLACED_BY_DEPLOY_WORKFLOW"
+
+[triggers]
+crons = ["*/30 * * * *"]
