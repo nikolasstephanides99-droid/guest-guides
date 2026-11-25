@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Callia AI Receptionist</title>
+<title>Rantevou AI Receptionist</title>
 <style>
 :root{--ink:#17212b;--muted:#5a6573;--accent:#0f7b6c;--soft:#eef6f4;--line:#dbe3e1;--bg:#fff;--card:#fff}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#e8edf0;--muted:#a3adb8;--accent:#3cc4ac;--soft:#14231f;--line:#2a3633;--bg:#0f1517;--card:#151d20}}
@@ -37,7 +37,7 @@ footer{padding:24px 0 40px;color:var(--muted);font-size:14px;border-top:1px soli
 <body>
 <div class="wrap">
 <header>
-  <div class="brand">Call<span>ia</span> <span class="small" data-t="brand"></span></div>
+  <div class="brand">Ranté<span>vou</span> <span class="small" data-t="brand"></span></div>
   <div class="langs"><button data-l="el">ΕΛ</button> <button data-l="en">EN</button> <button data-l="ru">RU</button></div>
 </header>
 
@@ -107,17 +107,17 @@ const T={
   p1:"των κλήσεων σε μικρές επιχειρήσεις μένουν αναπάντητες. Ο πελάτης καλεί τον επόμενο.",p2:"απαντά, και μετά το ωράριο και τα Σαββατοκύριακα.",p3:"γλώσσες: Ελληνικά, Αγγλικά, Ρωσικά.",
   howT:"Πώς λειτουργεί",h1s:"Μας λες ωράριο, υπηρεσίες, τιμές και συχνές ερωτήσεις.",h2s:"Το στήνουμε στο WhatsApp της επιχείρησής σου μέσα σε 1 εβδομάδα.",h3s:"Ο πελάτης γράφει, η γραμματέας απαντά και κλείνει ραντεβού στο ημερολόγιό σου.",h4s:"Ό,τι δεν ξέρει, το περνά σε εσένα. Υπενθυμίσεις φεύγουν αυτόματα.",
   priceT:"Τιμή",setup:"Εφάπαξ στήσιμο",monthly:"Μηνιαία συνδρομή",trialT:"14 μέρες δοκιμή",trial:"Χωρίς δέσμευση. Αν δεν σου φέρει ραντεβού, δεν πληρώνεις.",
-  foot:"Callia · Λεμεσός, Κύπρος · Τα δεδομένα των πελατών σας μένουν στην ΕΕ (GDPR)."},
+  foot:"Rantevou · Λεμεσός, Κύπρος · Τα δεδομένα των πελατών σας μένουν στην ΕΕ (GDPR)."},
  en:{brand:"AI receptionist",cta:"Message us on WhatsApp",demo:"See the live demo",whoT:"Who it's for",probT:"The problem",
   p1:"of calls to small businesses go unanswered. The customer calls the next one.",p2:"it answers, after hours and on weekends too.",p3:"languages: Greek, English, Russian.",
   howT:"How it works",h1s:"You tell us your hours, services, prices and common questions.",h2s:"We set it up on your business WhatsApp within 1 week.",h3s:"Customers message, the assistant replies and books into your calendar.",h4s:"Anything it doesn't know goes to you. Reminders are sent automatically.",
   priceT:"Pricing",setup:"One-off setup",monthly:"Monthly",trialT:"14-day trial",trial:"No commitment. If it doesn't bring bookings, you don't pay.",
-  foot:"Callia · Limassol, Cyprus · Your customers' data stays in the EU (GDPR)."},
+  foot:"Rantevou · Limassol, Cyprus · Your customers' data stays in the EU (GDPR)."},
  ru:{brand:"AI администратор",cta:"Напишите нам в WhatsApp",demo:"Смотреть демо",whoT:"Для кого",probT:"Проблема",
   p1:"звонков в малый бизнес остаются без ответа. Клиент звонит следующему.",p2:"на связи, и после работы, и в выходные.",p3:"языка: греческий, английский, русский.",
   howT:"Как это работает",h1s:"Вы сообщаете часы работы, услуги, цены и частые вопросы.",h2s:"Мы подключаем всё к WhatsApp вашего бизнеса за 1 неделю.",h3s:"Клиент пишет, ассистент отвечает и записывает в ваш календарь.",h4s:"Если ответа нет, вопрос передаётся вам. Напоминания уходят автоматически.",
   priceT:"Цена",setup:"Разовая настройка",monthly:"В месяц",trialT:"14 дней бесплатно",trial:"Без обязательств. Нет записей, нет оплаты.",
-  foot:"Callia · Лимасол, Кипр · Данные клиентов хранятся в ЕС (GDPR)."}
+  foot:"Rantevou · Лимасол, Кипр · Данные клиентов хранятся в ЕС (GDPR)."}
 };
 let lang="el",vert="dental";
 try{const q=new URLSearchParams(location.search);if(V[q.get("v")])vert=q.get("v");if(T[q.get("lang")])lang=q.get("lang");}catch(e){}
