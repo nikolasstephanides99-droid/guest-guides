@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Callia AI Receptionist</title>
+<style>
+:root{--ink:#17212b;--muted:#5a6573;--accent:#0f7b6c;--soft:#eef6f4;--line:#dbe3e1;--bg:#fff;--card:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#e8edf0;--muted:#a3adb8;--accent:#3cc4ac;--soft:#14231f;--line:#2a3633;--bg:#0f1517;--card:#151d20}}
+:root[data-theme="dark"]{--ink:#e8edf0;--muted:#a3adb8;--accent:#3cc4ac;--soft:#14231f;--line:#2a3633;--bg:#0f1517;--card:#151d20}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 0;gap:12px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:18px}.brand span{color:var(--accent)}
+.langs button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:600}
+.langs button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.hero{padding:40px 0 24px}
+h1{font-size:clamp(26px,5vw,40px);line-height:1.15;margin:0 0 12px}
+.sub{font-size:18px;color:var(--muted);margin:0 0 24px;max-width:640px}
+.btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;padding:12px 20px;border-radius:10px;font-weight:700;margin:0 8px 8px 0}
+.btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+section{padding:28px 0;border-top:1px solid var(--line)}
+h2{font-size:22px;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card h3{margin:0 0 6px;font-size:17px}.card p{margin:0;color:var(--muted);font-size:15px}
+.vert{cursor:pointer;text-decoration:none;color:inherit;display:block}
+.vert.on{border-color:var(--accent);background:var(--soft)}
+.stat{font-size:30px;font-weight:800;color:var(--accent)}
+.price{font-size:30px;font-weight:800}
+.small{color:var(--muted);font-size:14px}
+ol{padding-left:20px;margin:0}ol li{margin:6px 0}
+footer{padding:24px 0 40px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand">Call<span>ia</span> <span class="small" data-t="brand"></span></div>
+  <div class="langs"><button data-l="el">ΕΛ</button> <button data-l="en">EN</button> <button data-l="ru">RU</button></div>
+</header>
+
+<div class="hero">
+  <h1 id="h1"></h1>
+  <p class="sub" id="sub"></p>
+  <a class="btn" id="cta" href="https://wa.me/35796351119" data-t="cta"></a>
+  <a class="btn ghost" href="https://nikolasstephanides99-droid.github.io/guest-guides/dental-demo/" data-t="demo"></a>
+</div>
+
+<section>
+  <h2 data-t="whoT"></h2>
+  <div class="grid" id="verts"></div>
+</section>
+
+<section>
+  <h2 data-t="probT"></h2>
+  <div class="grid">
+    <div class="card"><div class="stat">62%</div><p data-t="p1"></p></div>
+    <div class="card"><div class="stat">24/7</div><p data-t="p2"></p></div>
+    <div class="card"><div class="stat">3</div><p data-t="p3"></p></div>
+  </div>
+</section>
+
+<section>
+  <h2 data-t="howT"></h2>
+  <ol><li data-t="h1s"></li><li data-t="h2s"></li><li data-t="h3s"></li><li data-t="h4s"></li></ol>
+</section>
+
+<section>
+  <h2 data-t="priceT"></h2>
+  <div class="grid">
+    <div class="card"><div class="small" data-t="setup"></div><div class="price" id="pSetup"></div></div>
+    <div class="card"><div class="small" data-t="monthly"></div><div class="price" id="pMonth"></div></div>
+    <div class="card"><h3 data-t="trialT"></h3><p data-t="trial"></p></div>
+  </div>
+</section>
+
+<footer data-t="foot"></footer>
+</div>
+
+<script>
+const V={
+ dental:{icon:"🦷",price:[300,79],
+  el:["Οδοντιατρεία","Κανένας νέος ασθενής δεν χάνεται επειδή δεν σηκώθηκε το τηλέφωνο.","Ραντεβού, υπενθυμίσεις, ερωτήσεις για τιμές και επείγοντα."],
+  en:["Dental clinics","No new patient lost because nobody picked up.","Bookings, reminders, price questions and emergencies."],
+  ru:["Стоматологии","Ни один новый пациент не потерян из-за пропущенного звонка.","Запись, напоминания, вопросы о ценах и срочные случаи."]},
+ physio:{icon:"🦴",price:[200,59],
+  el:["Φυσιοθεραπευτήρια","Εσύ κάνεις θεραπεία, η γραμματέας κλείνει τις επόμενες συνεδρίες.","Σειρές συνεδριών, ακυρώσεις, παραπεμπτικά ΓεΣΥ."],
+  en:["Physiotherapy","You treat. Your assistant books the next sessions.","Session series, cancellations, GESY referral questions."],
+  ru:["Физиотерапия","Вы лечите, ассистент записывает на следующие сеансы.","Курсы сеансов, отмены, вопросы по направлениям ГеСИ."]},
+ aesthetic:{icon:"✨",price:[300,89],
+  el:["Αισθητική & laser","Απαντά σε κάθε μήνυμα WhatsApp και Instagram μέσα σε δευτερόλεπτα.","Τιμές θεραπειών, διαθεσιμότητα, προκαταβολές, υπενθυμίσεις."],
+  en:["Aesthetics & laser","Answers every WhatsApp and Instagram message within seconds.","Treatment prices, availability, deposits, reminders."],
+  ru:["Эстетика и лазер","Отвечает на каждое сообщение в WhatsApp и Instagram за секунды.","Цены процедур, свободное время, предоплата, напоминания."]},
+ vet:{icon:"🐾",price:[250,69],
+  el:["Κτηνιατρεία","Ραντεβού και υπενθυμίσεις εμβολίων, χωρίς να σταματάς την εξέταση.","Εμβόλια, στειρώσεις, επείγοντα προς τον γιατρό."],
+  en:["Vet clinics","Bookings and vaccine reminders without stopping an exam.","Vaccines, neutering, emergencies routed to the vet."],
+  ru:["Ветклиники","Запись и напоминания о прививках, не отрываясь от приёма.","Прививки, стерилизация, срочные случаи сразу врачу."]},
+ garage:{icon:"🔧",price:[200,49],
+  el:["Συνεργεία & ελαστικά","Τα χέρια σου είναι στη μηχανή. Η γραμματέας κλείνει το σέρβις.","Σέρβις, MOT/ΜΟΤ, ελαστικά, ενημέρωση «έτοιμο το αυτοκίνητο»."],
+  en:["Garages & tyres","Your hands are in the engine. The assistant books the service.","Service, MOT, tyres, 'your car is ready' messages."],
+  ru:["Автосервисы и шины","Руки заняты мотором, ассистент записывает на сервис.","Сервис, техосмотр, шины, сообщение «машина готова»."]}
+};
+const T={
+ el:{brand:"AI γραμματέας",cta:"Μίλα μαζί μας στο WhatsApp",demo:"Δες ζωντανό demo",whoT:"Για ποιον είναι",probT:"Το πρόβλημα",
+  p1:"των κλήσεων σε μικρές επιχειρήσεις μένουν αναπάντητες. Ο πελάτης καλεί τον επόμενο.",p2:"απαντά, και μετά το ωράριο και τα Σαββατοκύριακα.",p3:"γλώσσες: Ελληνικά, Αγγλικά, Ρωσικά.",
+  howT:"Πώς λειτουργεί",h1s:"Μας λες ωράριο, υπηρεσίες, τιμές και συχνές ερωτήσεις.",h2s:"Το στήνουμε στο WhatsApp της επιχείρησής σου μέσα σε 1 εβδομάδα.",h3s:"Ο πελάτης γράφει, η γραμματέας απαντά και κλείνει ραντεβού στο ημερολόγιό σου.",h4s:"Ό,τι δεν ξέρει, το περνά σε εσένα. Υπενθυμίσεις φεύγουν αυτόματα.",
+  priceT:"Τιμή",setup:"Εφάπαξ στήσιμο",monthly:"Μηνιαία συνδρομή",trialT:"14 μέρες δοκιμή",trial:"Χωρίς δέσμευση. Αν δεν σου φέρει ραντεβού, δεν πληρώνεις.",
+  foot:"Callia · Λεμεσός, Κύπρος · Τα δεδομένα των πελατών σας μένουν στην ΕΕ (GDPR)."},
+ en:{brand:"AI receptionist",cta:"Message us on WhatsApp",demo:"See the live demo",whoT:"Who it's for",probT:"The problem",
+  p1:"of calls to small businesses go unanswered. The customer calls the next one.",p2:"it answers, after hours and on weekends too.",p3:"languages: Greek, English, Russian.",
+  howT:"How it works",h1s:"You tell us your hours, services, prices and common questions.",h2s:"We set it up on your business WhatsApp within 1 week.",h3s:"Customers message, the assistant replies and books into your calendar.",h4s:"Anything it doesn't know goes to you. Reminders are sent automatically.",
+  priceT:"Pricing",setup:"One-off setup",monthly:"Monthly",trialT:"14-day trial",trial:"No commitment. If it doesn't bring bookings, you don't pay.",
+  foot:"Callia · Limassol, Cyprus · Your customers' data stays in the EU (GDPR)."},
+ ru:{brand:"AI администратор",cta:"Напишите нам в WhatsApp",demo:"Смотреть демо",whoT:"Для кого",probT:"Проблема",
+  p1:"звонков в малый бизнес остаются без ответа. Клиент звонит следующему.",p2:"на связи, и после работы, и в выходные.",p3:"языка: греческий, английский, русский.",
+  howT:"Как это работает",h1s:"Вы сообщаете часы работы, услуги, цены и частые вопросы.",h2s:"Мы подключаем всё к WhatsApp вашего бизнеса за 1 неделю.",h3s:"Клиент пишет, ассистент отвечает и записывает в ваш календарь.",h4s:"Если ответа нет, вопрос передаётся вам. Напоминания уходят автоматически.",
+  priceT:"Цена",setup:"Разовая настройка",monthly:"В месяц",trialT:"14 дней бесплатно",trial:"Без обязательств. Нет записей, нет оплаты.",
+  foot:"Callia · Лимасол, Кипр · Данные клиентов хранятся в ЕС (GDPR)."}
+};
+let lang="el",vert="dental";
+try{const q=new URLSearchParams(location.search);if(V[q.get("v")])vert=q.get("v");if(T[q.get("lang")])lang=q.get("lang");}catch(e){}
+function render(){
+ document.documentElement.lang=lang;
+ document.querySelectorAll("[data-t]").forEach(e=>e.textContent=T[lang][e.dataset.t]);
+ document.querySelectorAll(".langs button").forEach(b=>b.classList.toggle("on",b.dataset.l===lang));
+ const v=V[vert];
+ document.getElementById("h1").textContent=v.icon+" "+v[lang][1];
+ document.getElementById("sub").textContent=v[lang][2];
+ document.getElementById("pSetup").textContent="€"+v.price[0];
+ document.getElementById("pMonth").textContent="€"+v.price[1];
+ const g=document.getElementById("verts");g.innerHTML="";
+ Object.entries(V).forEach(([k,x])=>{const a=document.createElement("a");a.className="card vert"+(k===vert?" on":"");a.href="?v="+k+"&lang="+lang;
+  a.innerHTML="<h3></h3><p></p>";a.querySelector("h3").textContent=x.icon+" "+x[lang][0];a.querySelector("p").textContent=x[lang][2];
+  a.onclick=ev=>{ev.preventDefault();vert=k;try{history.replaceState(null,"","?v="+k+"&lang="+lang)}catch(e){}render();window.scrollTo({top:0,behavior:"smooth"})};g.appendChild(a);});
+}
+document.querySelectorAll(".langs button").forEach(b=>b.onclick=()=>{lang=b.dataset.l;try{history.replaceState(null,"","?v="+vert+"&lang="+lang)}catch(e){}render()});
+render();
+</script>
+</body>
+</html>
